@@ -19,7 +19,6 @@ export default function Login () {
                     <button type="submit" className="login">Login</button>
                     <button type="button" className="register">Register</button>
                 </div>
-
             </form>
         </div>
     )
