@@ -15,6 +15,11 @@ export default function Login () {
                     name="password"
                     placeholder="Password"
                 />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                />
                 <div className="button-group">
                     <button type="submit" className="login">Login</button>
                     <button type="button" className="register">Register</button>
