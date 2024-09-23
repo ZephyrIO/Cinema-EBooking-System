@@ -55,7 +55,7 @@ div.login {
   
   button.login:hover,
   button.register:hover {
-    /*background-color: #5a6268;*/
+    background-color: #5a6268;
   }
   
   .button-group {
