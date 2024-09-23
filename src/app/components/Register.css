@@ -1,4 +1,4 @@
-div.login {
+div.register {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +26,13 @@ div.login {
     /*border: 1px solid #ddd;*/
     border-radius: 5px;
   }
+
+  form select {
+    margin-bottom: 10px;
+    padding: 10px;
+    /*border: 1px solid #ddd;*/
+    border-radius: 5px;
+  }
   
   
   button.login,
@@ -44,7 +51,7 @@ div.login {
   
   
   
-  .login-title {
+  .register-title {
     /*color: #000000;*/
     font-size: 24px;
     margin-bottom: 20px;
