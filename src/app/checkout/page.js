@@ -2,17 +2,20 @@
 import React, { useState } from 'react';
 import CheckOutForm from '../components/CheckOutForm';
 import OrderConfirmation from '../components/OrderConfirmation';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation'; // For getting query params
 import axios from 'axios';
 
 const CheckoutPage = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
 
+  const selectedSeats = searchParams.get('seats').split(',');
+  const seatCategories = searchParams.get('categories').split(',');
+
   const movieDetails = {
-    title: 'Inception',
-    price: 15.99,
+    title: searchParams.get('movie'),
+    showtime: searchParams.get('showtime'),
   };
 
   const userDetails = {
@@ -37,7 +40,7 @@ const CheckoutPage = () => {
   };
 
   const handleCancel = () => {
-    router.push('/'); // Redirect to homepage on cancel
+    // Redirect to homepage on cancel
   };
 
   return (
@@ -47,6 +50,8 @@ const CheckoutPage = () => {
           movieDetails={movieDetails}
           userDetails={userDetails}
           userHasLinkedPayment={userHasLinkedPayment}
+          selectedSeats={selectedSeats}
+          seatCategories={seatCategories}
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         />

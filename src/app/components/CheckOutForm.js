@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment }) => {
+const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment, selectedSeats, seatCategories }) => {
   const [name, setName] = useState(userDetails.name); // Set the initial value from userDetails
   const [email, setEmail] = useState(userDetails.email); // Set the initial value from userDetails
   const [promoCode, setPromoCode] = useState('');
-  const [tickets, setTickets] = useState([{ type: 'adult', quantity: 1 }]);
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -14,8 +13,8 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     adult: 15,
     child: 10
   };
-  const salesTax = 0.08; // Example 8% tax
-  const onlineFee = 2.5; // Example fee per transaction
+  const salesTax = 0.08; 
+  const onlineFee = 2.5; 
 
   // Promo code logic
   const validPromoCodes = { 'DISCOUNT10': 10 }; // Example: 10% discount for valid code
@@ -28,8 +27,12 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     }
   }, [promoCode]);
 
+  // Calculate the total based on the selected seats and their types (adult/child)
   const calculateTotal = () => {
-    const ticketTotal = tickets.reduce((sum, ticket) => sum + (ticketPrices[ticket.type] * ticket.quantity), 0);
+    const ticketTotal = selectedSeats.reduce((sum, seat, index) => {
+      const seatType = seatCategories[index];
+      return sum + ticketPrices[seatType];
+    }, 0);
     const totalBeforeTaxAndFees = ticketTotal;
     const totalAfterTax = totalBeforeTaxAndFees * (1 + salesTax);
     const totalWithFees = totalAfterTax + onlineFee;
@@ -46,19 +49,16 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       name,
       email,
       paymentInfo,
-      tickets,
+      seats: selectedSeats.map((seat, index) => ({
+        seatNumber: seat,
+        seatType: seatCategories[index]
+      })),
       totalAmount: calculateTotal(),
       movie: movieDetails,
       promoCode
     };
 
     onConfirm(bookingDetails);
-  };
-
-  const handleTicketChange = (index, type, quantity) => {
-    const newTickets = [...tickets];
-    newTickets[index] = { type, quantity: parseInt(quantity) };
-    setTickets(newTickets);
   };
 
   return (
@@ -85,28 +85,14 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
         </div>
         
         <div>
-          <label>Tickets:</label>
-          {tickets.map((ticket, index) => (
-            <div key={index}>
-              <select
-                value={ticket.type}
-                onChange={(e) => handleTicketChange(index, e.target.value, ticket.quantity)}
-              >
-                <option value="adult">Adult - $15</option>
-                <option value="child">Child - $10</option>
-              </select>
-              <input
-                type="number"
-                value={ticket.quantity}
-                onChange={(e) => handleTicketChange(index, ticket.type, e.target.value)}
-                min="1"
-                required
-              />
-            </div>
-          ))}
-          <button type="button" onClick={() => setTickets([...tickets, { type: 'adult', quantity: 1 }])}>
-            Add Ticket
-          </button>
+          <label>Selected Seats:</label>
+          <ul>
+            {selectedSeats.map((seat, index) => (
+              <li key={seat}>
+                Seat {seat} - {seatCategories[index] === 'adult' ? 'Adult ($15)' : 'Child ($10)'}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div>
