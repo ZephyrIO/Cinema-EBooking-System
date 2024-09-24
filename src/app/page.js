@@ -2,8 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import MovieCard from '../components/MovieCard';
-import './HomePage.css';
+import MovieCard from '@/app/components/MovieCard';
 
 
 const HomePage = () => {
