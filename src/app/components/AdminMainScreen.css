@@ -1,0 +1,27 @@
+.adminMainScreen {
+    /* Add styles for the main container */
+    width: 80%;
+    margin: 40px auto;
+    text-align: center;
+  }
+  
+  .buttons {
+    /* Add styles for the buttons container */
+    margin-top: 20px;
+  }
+  
+  button {
+    /* Add styles for each button */
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    /* Add styles for button hover */
+    background-color: #3e8e41;
+  }

@@ -1,0 +1,59 @@
+.ManageMovies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* or any desired height */
+}
+
+.ManageMovies div {
+  margin: 20px;
+  width: 300px;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: center;
+}
+  
+  .MovieCard {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .MovieCard img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .MovieCard h2 {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  
+  .MovieCard p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3e8e41;
+  }
+  
+  button:active {
+    transform: translateY(2px);
+  }

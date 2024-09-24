@@ -1,6 +1,6 @@
 import React from "react";
 import PromotionCard from "./PromotionsCard";
-import { useRouter } from 'next/navigation'
+import './ManagePromotions.css'
 
 const promotions = [
   {
@@ -20,10 +20,13 @@ const promotions = [
 const ManagePromotions = () => {
   return (
     <div>
+    <h1 className="title">Manage promotions</h1>
+    <div>
       {promotions.map((promotion, index) => (
         <PromotionCard key={index} promotion={promotion} />
       ))}
     </div>
+  </div>
   );
 };
 

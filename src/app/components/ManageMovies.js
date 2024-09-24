@@ -1,5 +1,6 @@
 import React from "react";
 import MovieCard from "./MovieCard";
+import './ManageMovies.css';
 
 const movies = [
   {
@@ -22,6 +23,8 @@ const movies = [
 const ManageMovies = () => {
   return (
     <div>
+      <h1>Manage Movies</h1>
+    <div>
       {movies.map((movie, index) => (
         <div key={index}>
           <MovieCard movie={movie} />
@@ -31,6 +34,7 @@ const ManageMovies = () => {
           </div>
         </div>
       ))}
+    </div>
     </div>
   );
 };
