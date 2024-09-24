@@ -8,6 +8,13 @@
     text-align: center;
   }
   
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .confirmation-page h2 {
     color: #007bff;
     margin-bottom: 20px;
