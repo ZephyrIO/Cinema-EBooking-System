@@ -14,8 +14,8 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     adult: 15,
     child: 10
   };
-  const salesTax = 0.08; // Example 8% tax
-  const onlineFee = 2.5; // Example fee per transaction
+  const salesTax = 0.08; 
+  const onlineFee = 2.5; 
 
   // Promo code logic
   const validPromoCodes = { 'DISCOUNT10': 10 }; // Example: 10% discount for valid code
