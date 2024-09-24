@@ -31,6 +31,7 @@ const ManageMovies = () => {
           <div>
             <button>Add Movie</button>
             <button>Delete Movie</button>
+            <button>Edit Movie Schedule</button>
           </div>
         </div>
       ))}
