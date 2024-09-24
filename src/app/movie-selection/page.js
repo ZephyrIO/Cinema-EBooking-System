@@ -4,7 +4,7 @@ import MovieSelection from '../components/MovieSelection';
 import SeatSelection from '../components/SeatSelection';
 import SeatCategory from '../components/SeatCategory';
 import { useRouter } from 'next/navigation';
-
+import styles from './MovieSelectionPage.css';
 const MovieSelectionPage = () => {
   const router = useRouter();
   const [step, setStep] = useState(1); // 1: MovieSelection, 2: SeatSelection, 3: SeatCategory
@@ -32,8 +32,8 @@ const MovieSelectionPage = () => {
     const query = new URLSearchParams({
       movie: selectedMovie,
       showtime: selectedShowtime,
-      seats: selectedSeats.join(','), // Join array into a string
-      categories: categories.join(','), // Join array into a string
+      seats: selectedSeats.join(','), 
+      categories: categories.join(','), 
     });
   
     // Proceed to Checkout Page with selected data

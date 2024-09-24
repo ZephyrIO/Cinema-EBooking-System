@@ -9,6 +9,12 @@
   color: #fff;
 }
 
+h1 {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .auth-buttons {
   display: flex;
   gap: 10px;

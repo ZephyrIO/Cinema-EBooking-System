@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import styles from './MovieSelection.css';
 const MovieSelection = ({ onMovieSelect }) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState('');
@@ -35,10 +35,10 @@ const MovieSelection = ({ onMovieSelect }) => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Select Movie and Showtime</h2>
       <div>
-        <label>Movie: </label>
+        <label>Movie:</label>
         <select value={selectedMovie.title || ''} onChange={handleMovieChange}>
           <option value="">Select Movie</option>
           {movies.map((movie) => (
@@ -49,7 +49,7 @@ const MovieSelection = ({ onMovieSelect }) => {
         </select>
       </div>
       <div>
-        <label>Showtime: </label>
+        <label>Showtime:</label>
         <select
           value={selectedShowtime}
           onChange={(e) => setSelectedShowtime(e.target.value)}
@@ -66,6 +66,7 @@ const MovieSelection = ({ onMovieSelect }) => {
       <button onClick={handleProceed}>Proceed to Seat Selection</button>
     </div>
   );
+  
 };
 
 export default MovieSelection;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import styles from './CheckOutForm.css';
 const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment, selectedSeats, seatCategories }) => {
   const [name, setName] = useState(userDetails.name); // Set the initial value from userDetails
   const [email, setEmail] = useState(userDetails.email); // Set the initial value from userDetails

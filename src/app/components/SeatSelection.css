@@ -1,0 +1,53 @@
+.container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the content horizontally */
+    text-align: center;
+  }
+  
+  .seat-chart {
+    display: grid;
+    grid-template-columns: repeat(8, 50px); /* 8 columns with fixed seat width */
+    grid-gap: 10px;
+    justify-content: center; /* Center the grid */
+    margin-top: 20px;
+  }
+  
+  .seat {
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    text-align: center;
+    background-color: #fff;
+    cursor: pointer;
+    width: 50px;
+    height: 50px; /* Set width and height for consistency */
+  }
+  
+  .seat.selected {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .seat:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .proceedButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .proceedButton:hover {
+    background-color: #0056b3;
+  }
+  

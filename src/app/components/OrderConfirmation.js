@@ -1,3 +1,5 @@
+import './OrderConfirmation.css'
+
 const OrderConfirmation = ({ bookingDetails }) => {
   if (!bookingDetails) return null;
 

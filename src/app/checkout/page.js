@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import CheckOutForm from '../components/CheckOutForm';
 import OrderConfirmation from '../components/OrderConfirmation';
-import { useSearchParams } from 'next/navigation'; // For getting query params
+import { useSearchParams } from 'next/navigation'; 
 import axios from 'axios';
+import styles from './CheckoutPage.css'; 
 
 const CheckoutPage = () => {
   const searchParams = useSearchParams();
@@ -28,16 +29,19 @@ const CheckoutPage = () => {
   const handleConfirm = async (details) => {
     try {
       const response = await axios.post('/api/submit-order', details);
-
-      // Assume response contains the booking number and order details
+  
       const bookingData = response.data;
-
-      setBookingDetails(bookingData);  // Set booking details to display in confirmation page
-      setIsConfirmed(true);  // Trigger the confirmation page rendering
+  
+      
+      localStorage.setItem('bookingDetails', JSON.stringify(bookingData));
+  
+      
+      router.push('/order-confirmation');
     } catch (error) {
       console.error('Error submitting the order:', error);
     }
   };
+  
 
   const handleCancel = () => {
     // Redirect to homepage on cancel
