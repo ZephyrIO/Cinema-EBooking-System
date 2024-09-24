@@ -1,0 +1,65 @@
+/* Full width header with Login and Register buttons */
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.auth-buttons button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.auth-buttons button:hover {
+  background-color: #0056b3;
+}
+
+/* Search container that spans the full width */
+.search-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f8f8f8; /* Optional background color */
+  text-align: center; /* Center the search input */
+}
+
+.search-container input[type="text"] {
+  width: 50%; /* Make the search input take 50% of the page width */
+  padding: 10px;
+  font-size: 1.1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Movie section styling */
+.movie-section {
+  padding: 20px;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.movie-card {
+  background-color: #fff;
+  color: black;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  width: calc(25% - 20px);
+}
