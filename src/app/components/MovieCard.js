@@ -12,7 +12,7 @@ const MovieCard = ({ movie }) => {
                 height="240"
                 src={movie.trailerLink}
                 title="Movie Trailer"
-                frameborder="0"
+                frameBorder="0"
                 allowFullScreen
                 ></iframe>
             </div>
