@@ -4,18 +4,18 @@ import './ManageMovies.css';
 
 const movies = [
   {
-    title: "Movie1",
-    description: "Movie1",
+    title: "Avatar",
+    description: "Avatar movie the blue guys not the airbender",
     trailerLink: "https://www.youtube.com/embed/movie1",
   },
   {
-    title: "Movie2",
-    description: "This is another movie",
+    title: "Kung Fu Panda",
+    description: "Fighting Panda",
     trailerLink: "https://www.youtube.com/embed/movie2",
   },
   {
-    title: "Movie3",
-    description: "This is yet another movie",
+    title: "Avengers",
+    description: "Who doesnt know what this is?",
     trailerLink: "https://www.youtube.com/embed/movie3",
   },
 ];
