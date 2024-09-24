@@ -15,8 +15,9 @@ const MovieCard = ({ movie }) => {
                 allowFullScreen
                 ></iframe>
             </div>
-            <button>Book Movie</button>
         </div>
         
     );
 };
+
+export default MovieCard;
