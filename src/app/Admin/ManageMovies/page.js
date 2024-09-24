@@ -6,7 +6,6 @@ import Register from '@/components/ManageMovies';
 export default function ManageMoviesView() {
     return (
         <div>
-            <Header />
             <ManageMovies />
         </div>
     );
