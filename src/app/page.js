@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '@/app/components/MovieCard';
 
-import style from './homepage.css';
+import './homepage.css';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
