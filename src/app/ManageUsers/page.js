@@ -1,13 +1,13 @@
-'use client'
-import { useState } from 'react';
-import Header from '@/components/Header';
-import Register from '@/components/ManageUsers';
+import React from 'react';
+import ManageUsers from '../components/ManageUsers';
 
-export default function ManageUsersView() {
+const ManageUsersPage = () => {
     return (
         <div>
-            <Header />
+            <h1>Manage Users</h1>
             <ManageUsers />
         </div>
     );
-}
+};
+
+export default ManageUsersPage;

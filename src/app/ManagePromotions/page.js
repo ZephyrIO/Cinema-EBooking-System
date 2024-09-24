@@ -1,13 +1,13 @@
-'use client'
-import { useState } from 'react';
-import Header from '@/components/Header';
-import Register from '@/components/ManagePromotions';
+import React from 'react';
+import ManagePromotions from '../components/ManagePromotions';
 
-export default function ManagePromotionsView() {
+const ManageMoviesPage = () => {
     return (
         <div>
-            <Header />
+            <h1>Manage promotions</h1>
             <ManagePromotions />
         </div>
     );
-}
+};
+
+export default ManageMoviesPage;
