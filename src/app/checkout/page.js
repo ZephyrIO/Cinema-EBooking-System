@@ -1,7 +1,8 @@
+'use client';
 import React, { useState } from 'react';
-import CheckOutForm from '../../components/CheckOutForm';
-import OrderConfirmation from '../../components/OrderConfirmation';
-import { useRouter } from 'next/router';
+import CheckOutForm from '../components/CheckOutForm';
+import OrderConfirmation from '../components/OrderConfirmation';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 const CheckoutPage = () => {
