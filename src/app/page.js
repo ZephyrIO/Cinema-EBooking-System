@@ -39,6 +39,7 @@ const HomePage = () => {
       <header>
         <h1>Cinema E-Booking System</h1>
         <div className="auth-buttons">
+          <button onClick={() => window.location.href = '/register'}>Book Movie</button>
           <button onClick={() => window.location.href = '/login'}>Login</button>
           <button onClick={() => window.location.href = '/register'}>Register</button>
         </div>
