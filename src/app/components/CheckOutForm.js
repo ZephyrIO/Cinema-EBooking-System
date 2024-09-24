@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment }) => {
+  const [name, setName] = useState(userDetails.name); // Set the initial value from userDetails
+  const [email, setEmail] = useState(userDetails.email); // Set the initial value from userDetails
   const [promoCode, setPromoCode] = useState('');
   const [tickets, setTickets] = useState([{ type: 'adult', quantity: 1 }]);
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
-  
+
   const ticketPrices = {
     adult: 15,
     child: 10
@@ -41,8 +43,8 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     const paymentInfo = userHasLinkedPayment ? 'linked' : { cardNumber, expiryDate, cvv };
 
     const bookingDetails = {
-      name: userDetails.name,
-      email: userDetails.email,
+      name,
+      email,
       paymentInfo,
       tickets,
       totalAmount: calculateTotal(),
@@ -65,11 +67,21 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
-          <input type="text" value={userDetails.name} disabled />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)} // Allow editing
+            required
+          />
         </div>
         <div>
           <label>Email:</label>
-          <input type="email" value={userDetails.email} disabled />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Allow editing
+            required
+          />
         </div>
         
         <div>
