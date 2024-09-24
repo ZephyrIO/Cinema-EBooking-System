@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import styles from './SeatCategory.css';
 const SeatCategory = ({ selectedSeats, onCategorySelect }) => {
   const [seatCategories, setSeatCategories] = useState(
     selectedSeats.map(() => 'adult') // Default all seats to "adult"
@@ -16,12 +16,13 @@ const SeatCategory = ({ selectedSeats, onCategorySelect }) => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Select Seat Categories</h2>
       {selectedSeats.map((seat, index) => (
-        <div key={seat}>
-          <label>{seat}</label>
+        <div key={seat} className="seat-row">
+          <label>Seat {seat}:</label>
           <select
+            className="select-category"
             value={seatCategories[index]}
             onChange={(e) => handleCategoryChange(index, e.target.value)}
           >
@@ -33,6 +34,7 @@ const SeatCategory = ({ selectedSeats, onCategorySelect }) => {
       <button onClick={handleProceed}>Proceed to Checkout</button>
     </div>
   );
+  
 };
 
 export default SeatCategory;

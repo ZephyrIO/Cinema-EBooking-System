@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import styles from './SeatSelection.css';
 const SeatSelection = ({ movie, showtime, onSeatsSelect }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
 
@@ -23,7 +23,7 @@ const SeatSelection = ({ movie, showtime, onSeatsSelect }) => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Select Seats for {movie} at {showtime}</h2>
       <div className="seat-chart">
         {seatLayout.map((row, rowIndex) => (
@@ -46,6 +46,7 @@ const SeatSelection = ({ movie, showtime, onSeatsSelect }) => {
       <button onClick={handleProceed}>Proceed to Seat Category</button>
     </div>
   );
+  
 };
 
 export default SeatSelection;
