@@ -3,7 +3,10 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  margin: 0 auto;
   height: 100vh; /* or any desired height */
+  width: 100%;
 }
 
 .ManageMovies div {

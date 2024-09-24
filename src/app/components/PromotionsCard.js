@@ -1,4 +1,5 @@
 import React from "react";
+import "./PromotionsCard.css";
 
 const PromotionCard = ({ promotion }) => {
   return (

@@ -1,0 +1,29 @@
+.promotion-card {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px; /* adjust the width as needed */
+    margin: 20px auto; /* center the card horizontally */
+    text-align: center;
+  }
+  
+  .promotion-card h2 {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .promotion-card p {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .promotion-card code {
+    font-size: 18px;
+    font-family: monospace;
+    background-color: #f0f0f0;
+    padding: 2px 5px;
+    border-radius: 5px;
+  }
