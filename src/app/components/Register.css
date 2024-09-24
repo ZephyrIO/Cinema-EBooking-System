@@ -70,9 +70,3 @@ div.register {
     justify-content: space-evenly;
   
   }
-  
-  button.login,
-  button.register {
-    width: 100px;
-    /* adjust as needed */
-  }
