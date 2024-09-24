@@ -1,5 +1,4 @@
 'use client';
-
 import React from "react";
 
 const MovieCard = ({ movie }) => {
@@ -22,3 +21,5 @@ const MovieCard = ({ movie }) => {
         
     );
 };
+
+export default MovieCard;
