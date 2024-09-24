@@ -1,5 +1,5 @@
 .promotion-card {
-    background-color: #f7f7f7;
+    background-color: #1f1c1c;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -23,7 +23,8 @@
   .promotion-card code {
     font-size: 18px;
     font-family: monospace;
-    background-color: #f0f0f0;
+    background-color: #009b17;
     padding: 2px 5px;
     border-radius: 5px;
   }
+

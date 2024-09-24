@@ -5,46 +5,11 @@
     align-items: center;
     padding: 20px;
   }
-  
-  .PromotionCard {
-    margin: 20px;
-    width: 300px;
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .PromotionCard .title {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #f2f2f2;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .PromotionCard .description {
-    padding: 10px;
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .PromotionCard .code {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    padding: 10px;
-    background-color: #f2f2f2;
-    border-top: 1px solid #ddd;
-  }
-  
-  .PromotionCard .discount {
-    font-size: 14px;
-    color: #666;
-    padding: 10px;
-  }
-
   .title {
     text-align: center;
-  }
+    color: #fffbfb;
+}
+
+  .description, .code, .discount {
+    color: #666; 
+}
