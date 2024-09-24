@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '@/app/components/MovieCard';
 
+import style from './homepage.css';
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
@@ -37,15 +38,22 @@ const HomePage = () => {
     <div className="home-page">
       <header>
         <h1>Cinema E-Booking System</h1>
+        <div className="auth-buttons">
+          <button onClick={() => window.location.href = '/login'}>Login</button>
+          <button onClick={() => window.location.href = '/register'}>Register</button>
+        </div>
+      </header>
+
+      {/* Search container */}
+      <div className="search-container">
         <input
           type="text"
           placeholder="Search for movies..."
           value={searchTerm}
           onChange={handleSearch}
         />
-        <button onClick={() => window.location.href = '/login'}>Login</button>
-      </header>
-      
+      </div>
+
       <section className="movie-section">
         <h2>Currently Running</h2>
         <div className="movie-list">

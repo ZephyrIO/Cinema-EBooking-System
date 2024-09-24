@@ -35,6 +35,20 @@ const movies = [
     reviews: ['82% on Rotten Tomatoes', 'A groundbreaking movie'],
     showdates: [new Date('2024-09-22'), new Date('2024-09-23')],
     showtimes: ['1:00 PM', '4:00 PM', '7:00 PM']
+  },
+  {
+    title: 'New Avatar',
+    category: 'Coming Soon',
+    cast: ['Sam Worthington', 'Zoe Saldana', 'Sigourney Weaver'],
+    director: 'James Cameron',
+    producer: 'Jon Landau',
+    description: 'A visually stunning journey to Pandora.',
+    trailerLink: 'https://www.youtube.com/watch?v=5PSNL1qE6VY',
+    releaseDate: new Date('2009-12-18'),
+    rating: 'PG-13',
+    reviews: ['82% on Rotten Tomatoes', 'A groundbreaking movie'],
+    showdates: [new Date('2024-09-22'), new Date('2024-09-23')],
+    showtimes: ['1:00 PM', '4:00 PM', '7:00 PM']
   }
 ];
 
