@@ -9,7 +9,7 @@ export default function EditProfile() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/')
+    axios.get('http://localhost:3001/api/users')
       .then(response => {
         setUserData(response.data);
       })
@@ -37,7 +37,7 @@ export default function EditProfile() {
             value={userData.phone}
             onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
           />
-          <input
+        <input
             type="email"
             name="email"
             placeholder="Email Address"
