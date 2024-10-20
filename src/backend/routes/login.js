@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 
 // Login a user
 router.post('/login', async (req, res) => {
@@ -21,10 +20,8 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ msg: 'Incorrect password.' });
         }
-
-        const token = jwt.sign({ id: user._id }, JWT_SECRET);
+        
         res.json({
-            token,
             user: {
                 id: user._id,
                 username: user.username,
@@ -34,3 +31,5 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+module.exports = router;
