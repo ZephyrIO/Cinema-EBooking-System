@@ -26,9 +26,9 @@ export default function Login () {
             console.log(formData)
             const response = await axios.post('http://localhost:3001/api/login', formData);
             console.log(response.data)
-            // setUserData({
-            //     token: response.data.token,
-            //     user: response.data.user,
+            //setUserData({
+            //    token: response.data.token,
+            //    user: response.data.user,
             // });
             //localStorage.setItem('auth-token', response.data.token);
             router.push('/');
