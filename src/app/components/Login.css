@@ -29,7 +29,8 @@ div.login {
   
   
   button.login,
-  button.register {
+  button.register,
+  button.forgot {
     padding: 10px;
     /*background-color: cornflowerblue;*/
     /*color: white;*/
@@ -54,7 +55,8 @@ div.login {
   
   
   button.login:hover,
-  button.register:hover {
+  button.register:hover,
+  button.forgot:hover {
     background-color: #5a6268;
   }
   

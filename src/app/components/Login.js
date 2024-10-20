@@ -62,6 +62,7 @@ export default function Login () {
                 <div className="button-group">
                     <button type="submit" className="login">Login</button>
                     <button type="button" className="register">Register</button>
+                    <button type="button" className="forgot">Forgot my Password</button>
                 </div>
             </form>
         </div>
