@@ -9,7 +9,7 @@ export default function EditProfile() {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/')
+    axios.get('http://localhost:3001/api/users')
       .then(response => {
         setUserData(response.data);
       })
