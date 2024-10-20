@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-//import UserContext from './UserContext';
+import UserContext from './UserContext';
 import './Login.css';
 
 export default function Login () {
-    //const { userData, setUserData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const router = useRouter();
     const [formData, setFormData] = useState({
         email: '',
@@ -26,12 +26,13 @@ export default function Login () {
             console.log(formData)
             const response = await axios.post('http://localhost:3001/api/login', formData);
             console.log(response.data)
-            //setUserData({
-            //    token: response.data.token,
-            //    user: response.data.user,
-            // });
-            //localStorage.setItem('auth-token', response.data.token);
+            setUserData({
+                token: response.data.token,
+                user: response.data.user,
+            });
+            localStorage.setItem('auth-token', response.data.token);
             router.push('/');
+            console.log(userData)
         } catch (err) {
             console.error('Login failed: ', err);
             alert(err.response.data.msg);
