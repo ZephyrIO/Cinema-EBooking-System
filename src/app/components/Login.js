@@ -39,7 +39,7 @@ export default function Login () {
     };
 
     const handleGoHome = () => {
-        window.location.href = '/'; // Navigate to home page
+        router.push('/'); // Navigate to home page
       };
 
     return (
