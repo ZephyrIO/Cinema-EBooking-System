@@ -1,13 +1,14 @@
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
-const moviesRouter = require('./routes/fetchMovies'); // Import the movies API route
+const moviesRouter = require('./routes/fetchMovies');
+const registerRouter = require('./routes/register'); // Import the register API route
 
 const app = express();
 
 // Enable CORS for requests from port 3000 (frontend)
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from frontend running on port 3000
+  origin: 'http://localhost:3000',
 }));
 
 app.use(express.json());
@@ -19,10 +20,11 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB via Mongoose'))
   .catch((error) => console.error('Error connecting to MongoDB:', error));
 
-// Use the movies route
-app.use('/api', moviesRouter);
+// Use the routes
+app.use('/api/movies', moviesRouter);
+app.use('/api', registerRouter);  // Add register router
 
-const PORT = process.env.PORT || 3001; // Run backend on port 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
