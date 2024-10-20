@@ -29,16 +29,29 @@ export default function Register() {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/api/register', formData);
+      
+      // If registration is successful, alert the message and redirect
       alert(response.data.message);
       window.location.href = '/register-confirm';
     } catch (error) {
       console.error('Error registering:', error);
-      alert('Failed to register.');
+      
+      // Show the exact error message from the backend
+      if (error.response && error.response.data) {
+        alert(`Registration failed: ${error.response.data.message}`);
+      } else {
+        alert('Registration failed. Please try again.');
+      }
     }
+  };
+
+  const handleGoHome = () => {
+    window.location.href = '/'; // Navigate to home page
   };
 
   return (
     <div className="register">
+      <button onClick={handleGoHome} className="back-to-home">Back to Home</button> {/* Back to Home Button */}
       <h2 className="register-title">Register</h2>
       <form onSubmit={handleSubmit}>
         <input type="email" name="email" placeholder="Email" required value={formData.email} onChange={handleInputChange} />
