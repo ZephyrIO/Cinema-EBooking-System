@@ -26,9 +26,9 @@ export default function Login () {
             console.log(formData)
             const response = await axios.post('http://localhost:3001/api/login', formData);
             console.log(response.data)
-            // setUserData({
-            //     token: response.data.token,
-            //     user: response.data.user,
+            //setUserData({
+            //    token: response.data.token,
+            //    user: response.data.user,
             // });
             //localStorage.setItem('auth-token', response.data.token);
             router.push('/');
@@ -39,7 +39,7 @@ export default function Login () {
     };
 
     const handleGoHome = () => {
-        window.location.href = '/'; // Navigate to home page
+        router.push('/'); // Navigate to home page
       };
 
     return (
@@ -51,12 +51,14 @@ export default function Login () {
                     type="email"
                     name="email"
                     placeholder="Email"
+                    required
                     onChange={handleInputChange}
                 />
                 <input
                     type="password"
                     name="password"
                     placeholder="Password"
+                    required
                     onChange={handleInputChange}
                 />
                 <div className="button-group">
