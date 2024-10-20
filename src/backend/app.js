@@ -21,7 +21,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 // Use the routes
-app.use('/api/movies', moviesRouter);
+app.use('/api', moviesRouter);
 app.use('/api', registerRouter);  // Add register router
 
 const PORT = process.env.PORT || 3001;
