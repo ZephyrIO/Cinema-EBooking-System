@@ -51,12 +51,14 @@ export default function Login () {
                     type="email"
                     name="email"
                     placeholder="Email"
+                    required
                     onChange={handleInputChange}
                 />
                 <input
                     type="password"
                     name="password"
                     placeholder="Password"
+                    required
                     onChange={handleInputChange}
                 />
                 <div className="button-group">
