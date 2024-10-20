@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const moviesRouter = require('./routes/fetchMovies');
 const registerRouter = require('./routes/register'); // Import the register API route
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -23,6 +24,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 // Use the routes
 app.use('/api', moviesRouter);
 app.use('/api', registerRouter);  // Add register router
+app.use('/api', loginRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
