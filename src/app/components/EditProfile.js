@@ -3,10 +3,23 @@
 import { useState, useEffect } from 'react';
 import './EditProfile.css';
 import axios from 'axios';
-import { useClient } from 'next/client';
 
 export default function EditProfile() {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    password: '',
+    cardType: '',
+    cardNumber: '',
+    expirationDate: '',
+    street: '',
+    city: '',
+    state: '',
+    zip: '',
+    promotions: false,
+    paymentCards: []
+  });
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/users')
@@ -18,10 +31,37 @@ export default function EditProfile() {
       });
   }, []);
 
+  const handleCardChange = (e, index) => {
+    const updatedCards = [...userData.paymentCards];
+    updatedCards[index] = e.target.value;
+    setUserData({ ...userData, paymentCards: updatedCards });
+  };
+
+  const handleAddCard = () => {
+    if (userData.paymentCards.length < 4) {
+      setUserData({ ...userData, paymentCards: [...userData.paymentCards, ''] });
+    } else {
+      alert('You can only add up to 4 payment cards.');
+    }
+  };
+
+  const handleRemoveCard = (index) => {
+    const updatedCards = [...userData.paymentCards];
+    updatedCards.splice(index, 1);
+    setUserData({ ...userData, paymentCards: updatedCards });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.put('http://localhost:3001/api/users', userData)
+      .then(() => alert('Profile updated successfully'))
+      .catch(error => console.error(error));
+  };
+
   return (
     <div className="edit-profile">
       <h2 className="edit-profile-title">Edit Profile</h2>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="personal-info">
           <input
             type="text"
@@ -37,12 +77,12 @@ export default function EditProfile() {
             value={userData.phone}
             onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
           />
-        <input
+          <input
             type="email"
             name="email"
             placeholder="Email Address"
             value={userData.email}
-            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+            readOnly
           />
           <input
             type="password"
@@ -53,26 +93,21 @@ export default function EditProfile() {
           />
         </div>
         <div className="payment-info">
-          <select name="cardType" placeholder="Card Type" value={userData.cardType}>
-            <option value="">Select Card Type</option>
-            <option value="Visa">Visa</option>
-            <option value="Mastercard">Mastercard</option>
-            <option value="Amex">American Express</option>
-          </select>
-          <input
-            type="text"
-            name="cardNumber"
-            placeholder="Card Number"
-            value={userData.cardNumber}
-            onChange={(e) => setUserData({ ...userData, cardNumber: e.target.value })}
-          />
-          <input
-            type="text"
-            name="expirationDate"
-            placeholder="Expiration Date (MM/YY)"
-            value={userData.expirationDate}
-            onChange={(e) => setUserData({ ...userData, expirationDate: e.target.value })}
-          />
+          {userData.paymentCards.map((card, index) => (
+            <div key={index} className="payment-card">
+              <input
+                type="text"
+                name="cardNumber"
+                placeholder="Card Number"
+                value={card}
+                onChange={(e) => handleCardChange(e, index)}
+              />
+              <button type="button" onClick={() => handleRemoveCard(index)}>Remove</button>
+            </div>
+          ))}
+          {userData.paymentCards.length < 4 && (
+            <button type="button" onClick={handleAddCard}>Add Payment Card</button>
+          )}
         </div>
         <div className="billing-address">
           <input
@@ -103,6 +138,16 @@ export default function EditProfile() {
             value={userData.zip}
             onChange={(e) => setUserData({ ...userData, zip: e.target.value })}
           />
+        </div>
+        <div className="promotions">
+          <label>
+            <input
+              type="checkbox"
+              checked={userData.promotions}
+              onChange={(e) => setUserData({ ...userData, promotions: e.target.checked })}
+            />
+            Register for promotions
+          </label>
         </div>
         <div className="button-group">
           <button type="submit" className="save">Save Changes</button>
