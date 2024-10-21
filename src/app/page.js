@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '@/app/components/MovieCard';
 import UserContext from './components/UserContext';
+import Header from './components/Header';
 import { useRouter } from 'next/navigation';
 
 import './homepage.css';
@@ -46,6 +47,7 @@ const HomePage = () => {
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
+      <Header />
       <div className="home-page">
         <header>
           <h1>Cinema E-Booking System</h1>
