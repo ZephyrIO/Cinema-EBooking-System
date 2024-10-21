@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import './Register.css';
 
@@ -16,6 +17,8 @@ export default function Register() {
     state: '',
     zip: '',
   });
+
+  const router = useRouter();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +48,10 @@ export default function Register() {
     }
   };
 
+  const handleLogin = () => {
+    router.push('/login');
+};
+
   const handleGoHome = () => {
     window.location.href = '/'; // Navigate to home page
   };
@@ -72,7 +79,7 @@ export default function Register() {
         <input type="text" name="zip" placeholder="Zip Code" value={formData.zip} onChange={handleInputChange} />
         <div className="button-group">
           <button type="submit" className="register">Register</button>
-          <button type="button" className="login">Login</button>
+          <button type="button" className="login" onClick={handleLogin}>Login</button>
         </div>
       </form>
     </div>
