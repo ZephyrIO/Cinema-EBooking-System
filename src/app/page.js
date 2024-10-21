@@ -1,17 +1,42 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import axios from 'axios';
 import MovieCard from '@/app/components/MovieCard';
 import UserContext from './components/UserContext';
-import Header from './components/Header';
 import { useRouter } from 'next/navigation';
 
 import './homepage.css';
 
 const HomePage = () => {
   const [userData, setUserData] = useState(undefined);
+  const [isToken, setIsToken] = useState(false);
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    console.log('isToken', isToken);
+  }, [isToken]);
+
+  useEffect(() => {
+    const storedUserDataString = localStorage.getItem('userData');
+    if (storedUserDataString && storedUserDataString !== "undefined") {
+      try {
+        const storedUserData = JSON.parse(storedUserDataString);
+        if (storedUserData && storedUserData.token) {
+          setUserData(storedUserData);
+          setIsToken(true);
+        }
+      } catch (error) {
+        console.error("Error parsing stored user data", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsToken(!!(userData && userData.token));
+    localStorage.setItem('userData', JSON.stringify(userData));
+  }, [userData]);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -47,13 +72,15 @@ const HomePage = () => {
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
-      <Header />
       <div className="home-page">
         <header>
           <h1>Cinema E-Booking System</h1>
           <div className="auth-buttons">
             <button onClick={() => router.push('/movie-selection')} disabled={userData ? false: true}>Book Movie</button>
-            <button onClick={() => router.push('/login')}>Login</button>
+            {isToken ? (
+              <button onClick={logoutHandler}>Logout</button>) : (
+              <button onClick={() => router.push('/login')}>Login</button>)
+            }
             <button onClick={() => router.push('/register')}>Register</button>
           </div>
         </header>
