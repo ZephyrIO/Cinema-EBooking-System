@@ -7,23 +7,41 @@ import './Login.css';
 export default function Login () {
     const { userData, setUserData } = useContext(UserContext);
     const router = useRouter();
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (userData.token) {
+            router.push('/');
+        }
+    }, [userData.token, router]);
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [name]: value,
+            [e.target.name]: e.target.value,
         });
+    };
+
+    useEffect(() => {
+        console.log(userData);
+    }, [userData]);
+
+    const handleGoHome = () => {
+        router.push('/'); // Navigate to home page
+    };
+
+    const handleRegister = () => {
+        router.push('/register');
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            console.log(formData)
             const response = await axios.post('http://localhost:3001/api/login', formData);
             console.log(response.data)
             setUserData({
@@ -32,16 +50,11 @@ export default function Login () {
             });
             localStorage.setItem('auth-token', response.data.token);
             router.push('/');
-            console.log(userData)
         } catch (err) {
             console.error('Login failed: ', err);
             alert(err.response.data.msg);
         }
     };
-
-    const handleGoHome = () => {
-        router.push('/'); // Navigate to home page
-      };
 
     return (
         <div className="login">
@@ -53,6 +66,7 @@ export default function Login () {
                     name="email"
                     placeholder="Email"
                     required
+                    value={formData.email}
                     onChange={handleInputChange}
                 />
                 <input
@@ -60,14 +74,16 @@ export default function Login () {
                     name="password"
                     placeholder="Password"
                     required
+                    value={formData.password}
                     onChange={handleInputChange}
                 />
                 <div className="button-group">
                     <button type="submit" className="login">Login</button>
-                    <button type="button" className="register">Register</button>
+                    <button type="button" className="register" onClick={handleRegister}>Register</button>
                     <button type="button" className="forgot">Forgot my Password</button>
                 </div>
             </form>
+            {error && <p>{error}</p>}
         </div>
     )
 }

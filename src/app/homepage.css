@@ -33,6 +33,11 @@ h1, h2 {
   background-color: #0056b3;
 }
 
+.auth-buttons button:disabled {
+  background: #000000;
+  color: #505050;
+}
+
 /* Search container that spans the full width */
 .search-container {
   width: 100%;

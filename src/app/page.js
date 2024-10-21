@@ -1,9 +1,9 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '@/app/components/MovieCard';
 import UserContext from './components/UserContext';
+import { useRouter } from 'next/navigation';
 
 import './homepage.css';
 
@@ -42,15 +42,17 @@ const HomePage = () => {
   const currentlyRunning = filteredMovies.filter(movie => movie.category === 'Currently Running');
   const comingSoon = filteredMovies.filter(movie => movie.category === 'Coming Soon');
 
+  const router = useRouter();
+
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
       <div className="home-page">
         <header>
           <h1>Cinema E-Booking System</h1>
           <div className="auth-buttons">
-            <button onClick={() => window.location.href = '/register'}>Book Movie</button>
-            <button onClick={() => window.location.href = '/login'}>Login</button>
-            <button onClick={() => window.location.href = '/register'}>Register</button>
+            <button onClick={() => router.push('/movie-selection')} disabled={userData ? false: true}>Book Movie</button>
+            <button onClick={() => router.push('/login')}>Login</button>
+            <button onClick={() => router.push('/register')}>Register</button>
           </div>
         </header>
 

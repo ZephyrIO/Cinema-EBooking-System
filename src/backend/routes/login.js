@@ -1,10 +1,17 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const User = require('../models/User');
-const router = express.Router();
+const userRouter = express.Router();
+
+module.exports = userRouter;
+
+JWT_SECRET = process.env.JWT_SECRET || 'secret123';
 
 // Login a user
-router.post('/login', async (req, res) => {
+userRouter.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -20,8 +27,10 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ msg: 'Incorrect password.' });
         }
-        
+
+        const token = jwt.sign({ id: user._id }, JWT_SECRET);
         res.json({
+            token,
             user: {
                 id: user._id,
                 username: user.username,
@@ -32,4 +41,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.exports = router;
+// Verify token validity
+userRouter.post('/tokenIsValid', async (req, res) => {
+    try {
+        const token = req.header('Authorization');
+        if (!token) return res.json(false);
+
+        const verified = jwt.verify(tokenParts[1], JWT_SECRET);
+        if (!verified) return res.json(false);
+
+        const user = await User.findById(verified.id);
+        if (!user) return res.json(false);
+        return res.json(true);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
