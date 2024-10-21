@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import './homepage.css';
 
 const HomePage = () => {
-  const [userData, setUserData] = useState(undefined);
   const [isToken, setIsToken] = useState(false);
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -69,6 +68,7 @@ const HomePage = () => {
   const comingSoon = filteredMovies.filter(movie => movie.category === 'Coming Soon');
 
   const router = useRouter();
+  const [userData, setUserData] = useState(undefined);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
@@ -76,7 +76,7 @@ const HomePage = () => {
         <header>
           <h1>Cinema E-Booking System</h1>
           <div className="auth-buttons">
-            <button onClick={() => router.push('/movie-selection')} disabled={userData ? false: true}>Book Movie</button>
+            <button onClick={() => router.push('/movie-selection')} disabled={userData == undefined ? true: false}>Book Movie</button>
             {isToken ? (
               <button onClick={logoutHandler}>Logout</button>) : (
               <button onClick={() => router.push('/login')}>Login</button>)
