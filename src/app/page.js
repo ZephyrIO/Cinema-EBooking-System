@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import './homepage.css';
 
 const HomePage = () => {
+  const [userData, setUserData] = useState(undefined);
   const [isToken, setIsToken] = useState(false);
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -68,7 +69,6 @@ const HomePage = () => {
   const comingSoon = filteredMovies.filter(movie => movie.category === 'Coming Soon');
 
   const router = useRouter();
-  const [userData, setUserData] = useState(undefined);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
