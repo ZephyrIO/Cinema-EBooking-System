@@ -63,7 +63,7 @@ async function sendConfirmationEmail(email) {
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER || '4050testemail@gmail.com',
-        pass: process.env.EMAIL_PASS || '4050test', // Use app password if 2FA is enabled
+        pass: process.env.EMAIL_PASS || 'fibv rdkr jxnh ukyc', // Use app password if 2FA is enabled
       },
       logger: true, // Enable logging
       debug: true,  // Include more detailed logs
