@@ -82,6 +82,7 @@ const HomePage = () => {
               <button onClick={() => router.push('/login')}>Login</button>)
             }
             <button onClick={() => router.push('/register')}>Register</button>
+            <button onClick={() => router.push('/EditProfile')} disabled={userData == undefined ? true: false}>Edit Profile</button>
           </div>
         </header>
 
