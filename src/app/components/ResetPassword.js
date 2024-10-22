@@ -21,7 +21,7 @@ export default function ResetPassword ()
         });
     };
 
-    const handleRegister = async (e) => {
+    const handleReset = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/api/forgot', formData);
@@ -50,7 +50,6 @@ export default function ResetPassword ()
                     <button type="submit" className="submit">Send Reset Mail</button>
                 </div>
             </form>
-            {error && <p>{error}</p>}
         </div>
     )
 }
