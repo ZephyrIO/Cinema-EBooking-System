@@ -10,10 +10,19 @@ export default function Login () {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (userData.token) {
-            router.push('/');
+        const storedUserData = localStorage.getItem('userData');
+        console.log("storedUserData:", storedUserData);
+        try {
+          if (storedUserData) {
+            const userData = JSON.parse(storedUserData);
+            console.log("parsed userData:", userData);
+            setUserData(userData);
+          }
+        } catch (error) {
+          console.error("Error parsing stored user data:", error);
         }
-    }, [userData.token, router]);
+      }, []);
+
 
     const [formData, setFormData] = useState({
         email: '',
@@ -48,7 +57,7 @@ export default function Login () {
                 token: response.data.token,
                 user: response.data.user,
             });
-            localStorage.setItem('auth-token', response.data.token);
+            localStorage.setItem('userData', JSON.stringify(userData));
             router.push('/');
         } catch (err) {
             console.error('Login failed: ', err);
