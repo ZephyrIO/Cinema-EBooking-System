@@ -63,6 +63,6 @@ export default function ResetPasswordPage() {
         </div>
         <button type="submit">Reset Password</button>
       </form>
-    </div>
+    </div> //123
   );
 }
