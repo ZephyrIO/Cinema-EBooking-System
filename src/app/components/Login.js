@@ -48,6 +48,10 @@ export default function Login () {
         router.push('/register');
     };
 
+    const handleForgot = () => {
+        router.push('/forgot-password');
+    };
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -91,7 +95,7 @@ export default function Login () {
                 <div className="button-group">
                     <button type="submit" className="login">Login</button>
                     <button type="button" className="register" onClick={handleRegister}>Register</button>
-                    <button type="button" className="forgot">Forgot my Password</button>
+                    <button type="button" className="forgot" onClick={handleForgot}>Forgot my Password</button>
                 </div>
             </form>
             {error && <p>{error}</p>}
