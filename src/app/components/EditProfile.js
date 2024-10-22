@@ -18,16 +18,21 @@ export default function EditProfile() {
     state: '',
     zip: '',
     promotions: false,
-    paymentCards: []
+    paymentCards: [],
   });
+
+  const [initialData, setInitialData] = useState({}); // To store initial data for reset
+  const [error, setError] = useState(null); // For error handling
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/users')
       .then(response => {
         setUserData(response.data);
+        setInitialData(response.data); // Save the initial data for reset
       })
       .catch(error => {
         console.error(error);
+        setError('Failed to load user data.');
       });
   }, []);
 
@@ -53,14 +58,29 @@ export default function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Simple validation
+    if (!userData.name || !userData.cardNumber) {
+      alert('Please fill in the required fields.');
+      return;
+    }
+
     axios.put('http://localhost:3001/api/users', userData)
       .then(() => alert('Profile updated successfully'))
-      .catch(error => console.error(error));
+      .catch(error => {
+        console.error(error);
+        setError('Failed to update profile.');
+      });
+  };
+
+  const handleCancel = () => {
+    setUserData(initialData); // Reset the form data to initial values
   };
 
   return (
     <div className="edit-profile">
       <h2 className="edit-profile-title">Edit Profile</h2>
+      {error && <div className="error-message">{error}</div>} {/* Error Message */}
       <form onSubmit={handleSubmit}>
         <div className="personal-info">
           <input
@@ -92,15 +112,33 @@ export default function EditProfile() {
             onChange={(e) => setUserData({ ...userData, password: e.target.value })}
           />
         </div>
+        
         <div className="payment-info">
           {userData.paymentCards.map((card, index) => (
             <div key={index} className="payment-card">
+              <select
+                name="cardType"
+                value={userData.cardType}
+                onChange={(e) => setUserData({ ...userData, cardType: e.target.value })}
+              >
+                <option value="">Select Card Type</option>
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="Amex">American Express</option>
+              </select>
               <input
                 type="text"
                 name="cardNumber"
                 placeholder="Card Number"
                 value={card}
                 onChange={(e) => handleCardChange(e, index)}
+              />
+              <input
+                type="text"
+                name="expirationDate"
+                placeholder="Expiration Date (MM/YY)"
+                value={userData.expirationDate}
+                onChange={(e) => setUserData({ ...userData, expirationDate: e.target.value })}
               />
               <button type="button" onClick={() => handleRemoveCard(index)}>Remove</button>
             </div>
@@ -109,6 +147,7 @@ export default function EditProfile() {
             <button type="button" onClick={handleAddCard}>Add Payment Card</button>
           )}
         </div>
+
         <div className="billing-address">
           <input
             type="text"
@@ -139,6 +178,7 @@ export default function EditProfile() {
             onChange={(e) => setUserData({ ...userData, zip: e.target.value })}
           />
         </div>
+
         <div className="promotions">
           <label>
             <input
@@ -149,9 +189,10 @@ export default function EditProfile() {
             Register for promotions
           </label>
         </div>
+
         <div className="button-group">
           <button type="submit" className="save">Save Changes</button>
-          <button type="button" className="cancel">Cancel</button>
+          <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
         </div>
       </form>
     </div>
