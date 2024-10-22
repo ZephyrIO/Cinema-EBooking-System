@@ -59,12 +59,13 @@ export default function EditProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Simple validation
-    if (!userData.name || !userData.cardNumber) {
-      alert('Please fill in the required fields.');
+    // Check if the essential fields are filled (like name, email)
+    if (!userData.name) {
+      alert('Please fill in your name and email.');
       return;
     }
-
+  
+    // If name and email are provided, proceed to update the profile
     axios.put('http://localhost:3001/api/users', userData)
       .then(() => alert('Profile updated successfully'))
       .catch(error => {
@@ -72,6 +73,7 @@ export default function EditProfile() {
         setError('Failed to update profile.');
       });
   };
+  
 
   const handleCancel = () => {
     setUserData(initialData); // Reset the form data to initial values
