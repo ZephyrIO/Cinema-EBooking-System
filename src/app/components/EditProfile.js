@@ -24,6 +24,10 @@ export default function EditProfile() {
   const [initialData, setInitialData] = useState({}); // To store initial data for reset
   const [error, setError] = useState(null); // For error handling
 
+  const handleGoHome = () => {
+    window.location.href = '/'; // Navigate to home page
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).token : null;
     
@@ -229,7 +233,7 @@ export default function EditProfile() {
 
         <div className="button-group">
           <button type="submit" className="save">Save Changes</button>
-          <button type="button" className="cancel" onClick={handleCancel}>Cancel</button>
+          <button type="button" className="cancel" onClick={handleGoHome}>Cancel</button>
         </div>
       </form>
     </div>
