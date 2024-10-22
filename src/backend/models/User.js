@@ -14,7 +14,9 @@ const userSchema = new mongoose.Schema({
     state: { type: String },
     zip: { type: String },
   },
-  status: { type: String, default: 'inactive' }, // active/inactive status
+  status: { type: String, default: 'inactive' },
+  resetPasswordToken: { type: String },  
+  resetPasswordExpires: { type: Date },   
   createdAt: { type: Date, default: Date.now },
 });
 
