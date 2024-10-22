@@ -54,72 +54,16 @@ userRouter.post('/tokenIsValid', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
-userRouter.post('/forgot', async (req, res) => {
-    const { email } = req.body;
-=======
 // Forgot Password Route
 userRouter.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
 
->>>>>>> c1903015640b538a7385160aa650793205a5fb8b
     try {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({ msg: 'User with this email does not exist.' });
         }
 
-<<<<<<< HEAD
-        res.json({
-            user: {
-                id: user._id,
-                username: user.username,
-            },
-        });
-
-        try {
-            await sendResetEmail(email)
-        } catch (emailError) {
-            console.error('Failed to send confirmation email:', emailError);
-            // Respond with a warning due to email not being sent
-            return res.status(201).json({ 
-                message: 'User exists, but email failed to send', 
-                userId: savedUser._id 
-            });
-        }
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Function to send a password reset email
-async function sendResetEmail(email) {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER || '4050testemail@gmail.com',
-            pass: process.env.EMAIL_PASS || '4050test', // Use app password if 2FA is enabled
-        },
-        logger: true, // Enable logging
-        debug: true,  // Include more detailed logs
-    });
-    
-    const mailOptions = {
-        from: '4050testemail@gmail.com',
-        to: email,
-        subject: 'Forgot Password',
-        text: `Click the following link to reset your password`,
-    };
-    
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log('Reset email sent to ' + email);
-    } catch (error) {
-        console.error('Error sending email:', error);
-        throw new Error('Error sending reset email');
-    }
-};
-=======
         const token = crypto.randomBytes(20).toString('hex');
         const resetTokenExpiration = Date.now() + 3600000; // 1 hour
 
@@ -207,4 +151,3 @@ userRouter.post('/reset-password', async (req, res) => {
 
 
 module.exports = userRouter;
->>>>>>> c1903015640b538a7385160aa650793205a5fb8b
