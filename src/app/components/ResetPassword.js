@@ -1,55 +1,41 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import UserContext from './UserContext';
-import './ResetPassword.css';
 
-export default function ResetPassword ()
-{
-    const handleGoHome = () => {
-        router.push('/'); // Navigate to home page
-    };
+export default function ResetPassword() {
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token'); // Assuming the token is passed as a query param
 
-    const [formData, setFormData] = useState({
-        email: ''
-    })
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`http://localhost:3001/api/reset-password/${token}`, { password });
+      setMessage('Password reset successfully. Redirecting to login...');
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } catch (error) {
+      setMessage('Error resetting password.');
+    }
+  };
 
-    const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleReset = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:3001/api/forgot', formData);
-            console.log(response.data)
-            //router.push('/');
-        } catch (err) {
-            console.error('Login failed: ', err);
-            alert(err.response.data.msg);
-        }
-    };
-
-    return (
-        <div className="reset">
-            <button onClick={handleGoHome} className="back-to-home">Back to Home</button> {/* Back to Home Button */}
-            <h2 className="reset-title">Reset Password</h2>
-            <form onSubmit={handleReset}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                />
-                <div className="button-group">
-                    <button type="submit" className="submit">Send Reset Mail</button>
-                </div>
-            </form>
-        </div>
-    )
+  return (
+    <div className="reset-password">
+      <h2>Reset Password</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="password"
+          placeholder="Enter your new password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Reset Password</button>
+      </form>
+      {message && <p>{message}</p>}
+    </div>
+  );
 }
