@@ -18,7 +18,7 @@ export default function EditProfile() {
     state: '',
     zip: '',
     promotions: false,
-    paymentCards: [], // Ensure this is always initialized as an array
+    paymentCards: [],
   });
 
   const [initialData, setInitialData] = useState({}); // To store initial data for reset
@@ -32,7 +32,7 @@ export default function EditProfile() {
     if (token) {
       axios.get('http://localhost:3001/api/users', {
         headers: {
-          'Authorization': `Bearer ${token}` // Make sure to send the token in the correct format
+          'Authorization': `Bearer ${token}`
         }
       })
       .then(response => {
@@ -48,13 +48,14 @@ export default function EditProfile() {
       setError('No user token found, please log in again.');
     }
   }, []);
+  
 
   const handleCardChange = (e, index) => {
     const updatedCards = [...userData.paymentCards];
     updatedCards[index] = e.target.value;
     setUserData({ ...userData, paymentCards: updatedCards });
   };
-  
+
   const handleAddCard = () => {
     if (userData.paymentCards.length < 4) {
       setUserData({ ...userData, paymentCards: [...userData.paymentCards, ''] });
@@ -62,7 +63,6 @@ export default function EditProfile() {
       alert('You can only add up to 4 payment cards.');
     }
   };
-  
 
   const handleRemoveCard = (index) => {
     const updatedCards = [...userData.paymentCards];
@@ -70,22 +70,39 @@ export default function EditProfile() {
     setUserData({ ...userData, paymentCards: updatedCards });
   };
 
+  const validateRequiredFields = () => {
+    const requiredFields = ['name', 'phone', 'password'];
+    for (const field of requiredFields) {
+      if (!userData[field]) {
+        setError(`${field.charAt(0).toUpperCase() + field.slice(1)} is required.`);
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+  
     // Simple validation
-    if (!userData.name || !userData.street || !userData.cardNumber) {
-      alert('Please fill in the required fields.');
-      return;
+    if (!validateRequiredFields()) {
+      return; // Stop the form submission if validation fails
     }
   
     // Save changes to backend
-    axios.put('http://localhost:3001/api/users', userData)
-      .then(() => alert('Profile updated successfully'))
-      .catch(error => {
-        console.error(error);
-        setError('Failed to update profile.');
-      });
+    axios.put('http://localhost:3001/api/users', userData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).token : ''}`
+      }
+    })
+    .then((response) => {
+      alert('Profile updated successfully');
+      setError(null); // Clear error if successful
+    })
+    .catch(error => {
+      console.error('Failed to update profile:', error.response || error); // Log the full error for debugging
+      setError(error.response?.data?.message || 'Failed to update profile.');
+    });
   };
 
   const handleCancel = () => {
@@ -127,45 +144,45 @@ export default function EditProfile() {
             onChange={(e) => setUserData({ ...userData, password: e.target.value })}
           />
         </div>
-        
+
         <div className="payment-info">
-  {Array.isArray(userData.paymentCards) && userData.paymentCards.length > 0 ? (
-    userData.paymentCards.map((card, index) => (
-      <div key={index} className="payment-card">
-        <select
-          name="cardType"
-          value={userData.cardType}
-          onChange={(e) => setUserData({ ...userData, cardType: e.target.value })}
-        >
-          <option value="">Select Card Type</option>
-          <option value="Visa">Visa</option>
-          <option value="Mastercard">Mastercard</option>
-          <option value="Amex">American Express</option>
-        </select>
-        <input
-          type="text"
-          name="cardNumber"
-          placeholder="Card Number"
-          value={card}
-          onChange={(e) => handleCardChange(e, index)}
-        />
-        <input
-          type="text"
-          name="expirationDate"
-          placeholder="Expiration Date (MM/YY)"
-          value={userData.expirationDate}
-          onChange={(e) => setUserData({ ...userData, expirationDate: e.target.value })}
-        />
-        <button type="button" onClick={() => handleRemoveCard(index)}>Remove</button>
-      </div>
-    ))
-  ) : (
-    <p>No payment cards added yet.</p>
-  )}
-  {userData.paymentCards && userData.paymentCards.length < 4 && (
-    <button type="button" onClick={handleAddCard}>Add Payment Card</button>
-  )}
-</div>
+          {Array.isArray(userData.paymentCards) && userData.paymentCards.length > 0 ? (
+            userData.paymentCards.map((card, index) => (
+              <div key={index} className="payment-card">
+                <select
+                  name="cardType"
+                  value={userData.cardType}
+                  onChange={(e) => setUserData({ ...userData, cardType: e.target.value })}
+                >
+                  <option value="">Select Card Type</option>
+                  <option value="Visa">Visa</option>
+                  <option value="Mastercard">Mastercard</option>
+                  <option value="Amex">American Express</option>
+                </select>
+                <input
+                  type="text"
+                  name="cardNumber"
+                  placeholder="Card Number"
+                  value={card}
+                  onChange={(e) => handleCardChange(e, index)}
+                />
+                <input
+                  type="text"
+                  name="expirationDate"
+                  placeholder="Expiration Date (MM/YY)"
+                  value={userData.expirationDate}
+                  onChange={(e) => setUserData({ ...userData, expirationDate: e.target.value })}
+                />
+                <button type="button" onClick={() => handleRemoveCard(index)}>Remove</button>
+              </div>
+            ))
+          ) : (
+            <p>No payment cards added yet.</p>
+          )}
+          {userData.paymentCards.length < 4 && (
+            <button type="button" onClick={handleAddCard}>Add Payment Card</button>
+          )}
+        </div>
 
         <div className="billing-address">
           <input
@@ -208,7 +225,6 @@ export default function EditProfile() {
             Register for promotions
           </label>
         </div>
-
 
         <div className="button-group">
           <button type="submit" className="save">Save Changes</button>
