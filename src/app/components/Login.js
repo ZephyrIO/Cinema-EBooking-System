@@ -52,6 +52,8 @@ export default function Login () {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/api/login', formData);
+            const userData = response.data;
+            console.log("updated userData:", userData);
             console.log(response.data)
             setUserData({
                 token: response.data.token,
