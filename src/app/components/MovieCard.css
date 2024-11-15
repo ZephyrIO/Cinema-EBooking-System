@@ -31,6 +31,13 @@ header {
   background-color: #fff;
 }
 
+.showtimes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
 .movie-card h3 {
   margin: 0;
   font-size: 1.25rem;

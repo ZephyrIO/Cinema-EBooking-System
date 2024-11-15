@@ -7,7 +7,8 @@ const MovieCard = ({ movie }) => {
             <div className="movie-card">
                 <h3>{movie.title}</h3>
                 <p>{movie.description}</p>
-                <p>{movie.rating}</p>
+                <p>{movie.rating}</p> 
+                <p className='showtimes'>{movie.showtimes.join(" • ")}</p>
                 <div>
                     <iframe
                         width="320"
@@ -16,8 +17,6 @@ const MovieCard = ({ movie }) => {
                         title="Movie Trailer"
                         frameBorder="0"
                         allowFullScreen
-                        showdates = {movie.showdates}   
-                        showtime = {movie.showtimes}
                     ></iframe>
                 </div>
             </div>
