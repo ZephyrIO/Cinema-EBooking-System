@@ -1,26 +1,31 @@
-import React from "react";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import axios from 'axios';
 import MovieCard from "./MovieCard";
+
 import './ManageMovies.css';
 
-const movies = [
-  {
-    title: "Avatar",
-    description: "Avatar movie the blue guys not the airbender",
-    trailerLink: "https://www.youtube.com/embed/movie1",
-  },
-  {
-    title: "Kung Fu Panda",
-    description: "Fighting Panda",
-    trailerLink: "https://www.youtube.com/embed/movie2",
-  },
-  {
-    title: "Avengers",
-    description: "Who doesnt know what this is?",
-    trailerLink: "https://www.youtube.com/embed/movie3",
-  },
-];
+const movies = () => {
+  const [movies, setMovies] = useState([]);
+};
 
 const ManageMovies = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get('/api/movies');
+        setMovies(response.data);
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+    };
+    fetchMovies();
+  }, []);
+
   return (
     <div>
       <h1>Manage Movies</h1>

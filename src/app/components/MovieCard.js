@@ -16,6 +16,8 @@ const MovieCard = ({ movie }) => {
                         title="Movie Trailer"
                         frameBorder="0"
                         allowFullScreen
+                        showdates = {movie.showdates}   
+                        showtime = {movie.showtimes}
                     ></iframe>
                 </div>
             </div>
