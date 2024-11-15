@@ -1,26 +1,27 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import './MovieCard.css';
 const MovieCard = ({ movie }) => {
+    const router = useRouter();
+
     return (
-        <Link href={`/${movie._id}`}>
-            <div className="movie-card">
-                <h3>{movie.title}</h3>
-                <p>{movie.description}</p>
-                <p>{movie.rating}</p> 
-                <p className='showtimes'>{movie.showtimes.join(" • ")}</p>
-                <div>
-                    <iframe
-                        width="320"
-                        height="240"
+        <div className="movie-card">
+            <h3>{movie.title}</h3>
+            <p>{movie.description}</p>
+            <p>{movie.rating}</p>
+            <div>
+                <iframe
+                    width="320"
+                    height="240"
                         src={movie.trailerLink}
-                        title="Movie Trailer"
-                        frameBorder="0"
-                        allowFullScreen
-                    ></iframe>
-                </div>
+                    title="Movie Trailer"
+                    frameBorder="0"
+                    allowFullScreen
+                ></iframe>
             </div>
-        </Link>
+            <button onClick={() => router.push(`/${movie._id}`)}>Movie Info</button>
+        </div>
     );
 };
 
