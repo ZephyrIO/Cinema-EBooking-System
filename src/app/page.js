@@ -21,7 +21,7 @@ const HomePage = () => {
         const storedUserData = JSON.parse(storedUserDataString);
         if (storedUserData && storedUserData.token) {
           setUserData(storedUserData);
-          setIsToken(true);
+          setIsToken(true)
         }
       } catch (error) {
         console.error("Error parsing stored user data", error);
@@ -63,6 +63,7 @@ const HomePage = () => {
               <button onClick={() => {
                 localStorage.removeItem('userData');
                 setUserData(null);
+                setIsToken(false)
                 router.push('/');
               }}>Logout</button>
             ) : (

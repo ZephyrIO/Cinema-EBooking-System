@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import './moviePage.css';
 
 const MovieDetailsPage = ({ params }) => {
   const { movieId } = params;
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -21,11 +23,16 @@ const MovieDetailsPage = ({ params }) => {
     fetchMovie();
   }, [movieId]);
 
+  const handleGoHome = () => {
+    router.push('/'); // Navigate to home page
+  };
+
   if (error) return <div>{error}</div>;
 
   return (
     movie ? (
       <div className="movie-details">
+        <button onClick={handleGoHome} className="back-to-home">Back to Home</button> {/* Back to Home Button */}
         <h1>{movie.title}</h1>
         <p><strong>Category:</strong> {movie.category}</p>
         <p><strong>Cast:</strong> {movie.cast.join(', ')}</p>
@@ -46,6 +53,8 @@ const MovieDetailsPage = ({ params }) => {
             allowFullScreen
           ></iframe>
         </div>
+        {console.log(localStorage.getItem('userData'))}
+        <button onClick={() => router.push('/movie-selection')} disabled={localStorage.getItem('userData') == 'undefined' || localStorage.getItem('userData') == null}>Book Movie</button>
       </div>
     ) : (
       <p>Loading...</p>
