@@ -50,4 +50,45 @@ router.post('/movies', async (req, res) => {
   }
 });
 
+// Route to update an existing movie
+router.put('/movies/:id', async (req, res) => {
+  try {
+    const { showdates, showtimes } = req.body;
+
+    // Find all movies except the one being updated
+    const conflictingMovies = await Movie.find({
+      _id: { $ne: req.params.id }, // Exclude the current movie
+      showdates: { $in: showdates }, // Check overlapping showdates
+      showtimes: { $in: showtimes }, // Check overlapping showtimes
+    });
+
+    if (conflictingMovies.length > 0) {
+      return res.status(400).json({
+        message: 'Show date and time conflicts with other movies.',
+        conflicts: conflictingMovies.map((movie) => ({
+          title: movie.title,
+          showdates: movie.showdates,
+          showtimes: movie.showtimes,
+        })),
+      });
+    }
+
+    // Proceed with updating the movie
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    console.error('Error updating movie:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});s
+
 module.exports = router;
