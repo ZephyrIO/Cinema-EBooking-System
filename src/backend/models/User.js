@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     zip: { type: String },
   },
   status: { type: String, default: 'inactive' },
+  isAdmin: { type: Boolean, default: false },
   resetPasswordToken: { type: String },  
   resetPasswordExpires: { type: Date },   
   createdAt: { type: Date, default: Date.now },
