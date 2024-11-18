@@ -32,6 +32,13 @@ export default function AdminMainScreen() {
                 >
                     Manage Promotions
                 </button>
+                <button
+                    type="button"
+                    className="ExitAdmin"
+                    onClick={() => router.push('/')}
+                >
+                    Return to Homepage
+                </button>
             </div>
         </div>
     );

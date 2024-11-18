@@ -62,7 +62,11 @@ export default function Login() {
         user: response.data.user,
       });
       localStorage.setItem('userData', JSON.stringify(userData));
-      router.push('/');
+      if(userData.user.isAdmin) {
+        router.push('/AdminMainScreen');
+      } else {
+        router.push('/');
+      }
     } catch (err) {
       console.error('Login failed: ', err);
       alert(err.response.data.msg);

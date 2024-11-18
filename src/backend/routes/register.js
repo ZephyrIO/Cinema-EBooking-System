@@ -32,6 +32,7 @@ router.post('/register', async (req, res) => {
             expirationDate: hashedExpirationDate,
             address: { street, city, state, zip },
             status: 'inactive',
+            isAdmin: false,
         });
 
         // Save the user to the database
