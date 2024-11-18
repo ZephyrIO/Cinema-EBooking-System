@@ -1,10 +1,13 @@
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const moviesRouter = require('./routes/fetchMovies');
 const registerRouter = require('./routes/register'); // Import the register API route
 const loginRouter = require('./routes/login');
 const userRouter = require('./routes/fetchUsers');
+const promotionRouter = require('./routes/fetchPromotions');
+const emailRoutes = require('./routes/emailRoutes');
 const app = express();
 
 // Enable CORS for requests from port 3000 (frontend)
@@ -26,6 +29,8 @@ app.use('/api', moviesRouter);
 app.use('/api', registerRouter);  // Add register router
 app.use('/api', loginRouter);
 app.use('/api', userRouter);
+app.use('/api', promotionRouter);
+app.use('/api', emailRoutes);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
