@@ -39,29 +39,8 @@ const ManageMovies = () => {
     fetchMovies();
   }, []);
 
-  const validateRequiredFields = () => {
-    const requiredFields = ['title', 'category', 'director', 'producer', 'description', 'releaseDate', 'rating'];
-    for (const field of requiredFields) {
-      if (!newMovie[field]) {
-        setError(`${field.charAt(0).toUpperCase() + field.slice(1)} is required.`);
-        return false;
-      }
-    }
-    if (!newMovie.cast.length) {
-      setError('At least one cast member is required.');
-      return false;
-    }
-    if (!newMovie.reviews.length) {
-      setError('At least one review is required.');
-      return false;
-    }
-    return true;
-  };
-
   const handleAddMovie = async (event) => {
     event.preventDefault();
-
-    if (!validateRequiredFields()) return;
 
     try {
       const response = await axios.post('/api/movies', newMovie);
