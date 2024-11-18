@@ -89,6 +89,6 @@ router.put('/movies/:id', async (req, res) => {
     console.error('Error updating movie:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
-});s
+});
 
 module.exports = router;
