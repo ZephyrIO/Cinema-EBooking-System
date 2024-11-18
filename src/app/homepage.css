@@ -75,3 +75,44 @@ h1, h2 {
   border-radius: 10px;
   width: calc(25% - 20px);
 }
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filter-buttons h3 {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.filter-buttons button {
+  padding: 5px 10px; /* Reduced padding */
+  font-size: 0.9rem; /* Smaller font size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 0 0 auto; 
+}
+
+.filter-buttons button:hover {
+  background-color: #0056b3;
+}
+
+.filter-buttons input[type="date"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.rating-dropdown {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+}

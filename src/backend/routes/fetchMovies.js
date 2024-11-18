@@ -23,7 +23,25 @@ router.get('/movies/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+// Route to filter movies by rating
+router.get('/movies/filter/rating/:rating', async (req, res) => {
+  try {
+    const movies = await Movie.find({ rating: req.params.rating });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to filter movies by rating' });
+  }
+});
 
+// Route to filter movies by a specific date
+router.get('/movies/filter/date/:date', async (req, res) => {
+  try {
+    const movies = await Movie.find({ showdates: { $eq: new Date(req.params.date) } });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to filter movies by date' });
+  }
+});
 
 // Route to add a new movie
 router.post('/movies', async (req, res) => {

@@ -31,6 +31,7 @@ app.use('/api', loginRouter);
 app.use('/api', userRouter);
 app.use('/api', promotionRouter);
 app.use('/api', emailRoutes);
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
