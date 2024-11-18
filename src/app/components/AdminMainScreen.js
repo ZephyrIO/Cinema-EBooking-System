@@ -20,13 +20,6 @@ export default function AdminMainScreen() {
                 </button>
                 <button
                     type="button"
-                    className="ManageSchechedule"
-                    onClick={() => router.push('/ManageSchedule')}
-                >
-                    Manage Movies Schedule
-                </button>
-                <button
-                    type="button"
                     className="ManageUsers"
                     onClick={() => router.push('/ManageUsers')}
                 >
