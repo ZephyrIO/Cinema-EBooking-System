@@ -4,7 +4,7 @@ const UserCard = ({ user, handleGrantAdmin, handleDelete, handleUpdate, handleSu
   return (
     <div className="user-card">
       <h2>{user.name}</h2>
-      <p>ID: {user.id}</p>
+      <p>ID: {user._id}</p>
     </div>
   );
 };
