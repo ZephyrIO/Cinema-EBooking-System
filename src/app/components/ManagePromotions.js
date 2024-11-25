@@ -42,7 +42,7 @@ const ManagePromotions = () => {
     setEmail(e.target.value);
   };
 
-  // Add a new promotion (POST to backend)
+  // Add a new promotion
   const handleAddPromotion = async (e) => {
     e.preventDefault();
     if (
@@ -59,14 +59,14 @@ const ManagePromotions = () => {
           discount: Number(newPromotion.discount),
         });
 
-        setPromotions([...promotions, response.data]); // Update the list with the new promotion
+        setPromotions([...promotions, response.data]);
         setNewPromotion({
           title: "",
           description: "",
           code: "",
           discount: "",
         });
-        setShowModal(false); // Close the modal
+        setShowModal(false);
         alert("Promotion added successfully!");
       } catch (error) {
         console.error("Error adding promotion:", error);
@@ -77,14 +77,25 @@ const ManagePromotions = () => {
     }
   };
 
+  // Delete a promotion
+  const handleDeletePromotion = async (id) => {
+    try {
+      await axios.delete(`/api/promotions/${id}`); // Call backend API to delete
+      setPromotions(promotions.filter((promotion) => promotion._id !== id)); // Remove from local state
+      alert("Promotion deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting promotion:", error);
+      alert("Failed to delete promotion. Please try again.");
+    }
+  };
+
   // Simulate sending promotion email
   const handleSendEmail = async () => {
     if (email) {
       try {
-        // Simulate email API (replace with actual email endpoint if available)
         await axios.post('/api/sendEmail', { email, promotions });
         alert(`Promotion details have been sent to ${email}`);
-        setEmail(""); // Reset email field
+        setEmail("");
       } catch (error) {
         console.error("Error sending email:", error);
         alert("Failed to send email. Please try again.");
@@ -98,12 +109,20 @@ const ManagePromotions = () => {
     <div>
       <h1 className="title">Manage Promotions</h1>
 
-      {error && <div className="error-message">{error}</div>} {/* Error Message */}
+      {error && <div className="error-message">{error}</div>}
 
       {/* Display Promotions */}
       <div>
-        {promotions.map((promotion, index) => (
-          <PromotionCard key={promotion._id || index} promotion={promotion} />
+        {promotions.map((promotion) => (
+          <div key={promotion._id} className="promotion-item">
+            <PromotionCard promotion={promotion} />
+            <button
+              className="delete-btn"
+              onClick={() => handleDeletePromotion(promotion._id)}
+            >
+              Delete
+            </button>
+          </div>
         ))}
       </div>
 
