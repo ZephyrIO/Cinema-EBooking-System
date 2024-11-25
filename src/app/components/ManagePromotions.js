@@ -80,8 +80,8 @@ const ManagePromotions = () => {
   // Delete a promotion
   const handleDeletePromotion = async (id) => {
     try {
-      await axios.delete(`/api/promotions/${id}`); // Call backend API to delete
-      setPromotions(promotions.filter((promotion) => promotion._id !== id)); // Remove from local state
+      await axios.delete(`/api/promotions/${id}`);
+      setPromotions(promotions.filter((promotion) => promotion._id !== id));
       alert("Promotion deleted successfully!");
     } catch (error) {
       console.error("Error deleting promotion:", error);
@@ -89,7 +89,18 @@ const ManagePromotions = () => {
     }
   };
 
-  // Simulate sending promotion email
+  // Send promotions to all subscribed users
+  const handleSendToSubscribedUsers = async () => {
+    try {
+      const response = await axios.post('/api/sendEmailToSubscribed', { promotions });
+      alert(response.data.message);
+    } catch (error) {
+      console.error("Error sending promotions to subscribed users:", error);
+      alert("Failed to send promotions to subscribed users. Please try again.");
+    }
+  };
+
+  // Simulate sending promotion email to a specific email
   const handleSendEmail = async () => {
     if (email) {
       try {
@@ -129,6 +140,11 @@ const ManagePromotions = () => {
       {/* Add New Promotion Button */}
       <button className="add-promotion-btn" onClick={() => setShowModal(true)}>
         Add Promotion
+      </button>
+
+      {/* Send Promotions to Subscribed Users Button */}
+      <button className="send-promotions-btn" onClick={handleSendToSubscribedUsers}>
+        Send Promotions to Subscribed Users
       </button>
 
       {/* Modal for Adding New Promotion */}
