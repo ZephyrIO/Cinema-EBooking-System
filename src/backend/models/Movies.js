@@ -7,6 +7,7 @@ const movieSchema = new mongoose.Schema({
   director: { type: String, required: true },
   producer: { type: String, required: true },
   description: { type: String, required: true },
+  genre: { type: String, required: true},
   trailerLink: { type: String, required: true },  // Link to the YouTube trailer
   releaseDate: { type: Date, required: true },
   rating: { type: String, enum: ['G', 'PG', 'PG-13', 'R', 'NC-17'], required: true },

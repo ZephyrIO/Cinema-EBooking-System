@@ -14,6 +14,8 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRating, setFilterRating] = useState('');
   const [filterDate, setFilterDate] = useState('');
+  const [filterGenre, setFilterGenre] = useState('');
+  const [genres, setGenres] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,7 +42,19 @@ const HomePage = () => {
         console.error('Error fetching movies:', error);
       }
     };
+
+    // Fetch all unique genres for dropdown
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get('/api/genres'); // Backend endpoint for genres
+        setGenres(response.data);
+      } catch (error) {
+        console.error('Error fetching genres:', error);
+      }
+    };
+
     fetchMovies();
+    fetchGenres();
   }, []);
 
   const handleSearch = (e) => {
@@ -69,6 +83,20 @@ const HomePage = () => {
       }
     } catch (error) {
       console.error('Error filtering movies by date:', error);
+    }
+  };
+
+  const handleGenreFilter = async (genre) => {
+    try {
+      if (!genre) {
+        const response = await axios.get('/api/movies'); // Fetch all movies if genre is cleared
+        setMovies(response.data);
+      } else {
+        const response = await axios.get(`/api/movies/filter/genre/${genre}`);
+        setMovies(response.data);
+      }
+    } catch (error) {
+      console.error('Error filtering movies by genre:', error);
     }
   };
   
@@ -142,6 +170,21 @@ const HomePage = () => {
               }}
             />
 
+          <h3>Filter By Genre:</h3>
+          <select
+            onChange={(e) => handleGenreFilter(e.target.value)}
+            defaultValue=""
+            className="genre-dropdown"
+          >
+            <option value="" disabled>
+              Select a genre
+            </option>
+            {genres.map((genre, index) => (
+              <option key={index} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </select>
         </div>
 
         <section className="movie-section">

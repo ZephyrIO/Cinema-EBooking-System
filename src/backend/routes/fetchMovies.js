@@ -43,6 +43,27 @@ router.get('/movies/filter/date/:date', async (req, res) => {
   }
 });
 
+// Route to filter movies by genre
+router.get('/movies/filter/genre/:genre', async (req, res) => {
+  try {
+    const movies = await Movie.find({ genre: req.params.genre });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to filter movies by genre' });
+  }
+});
+
+// Route to get all unique genres
+router.get('/genres', async (req, res) => {
+  try {
+    const genres = await Movie.distinct('genre'); // Fetch unique genres
+    res.json(genres);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch genres' });
+  }
+});
+
+
 // Route to add a new movie
 router.post('/movies', async (req, res) => {
   const newMovie = new Movie({

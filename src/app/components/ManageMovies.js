@@ -16,6 +16,7 @@ const ManageMovies = () => {
     director: '',
     producer: '',
     description: '',
+    genre: '',
     trailerLink: '',
     releaseDate: '',
     rating: '',
@@ -54,6 +55,7 @@ const ManageMovies = () => {
           director: '',
           producer: '',
           description: '',
+          genre: '',
           trailerLink: '',
           releaseDate: '',
           rating: '',
@@ -151,6 +153,11 @@ const ManageMovies = () => {
           <label>
             Description:
             <textarea name="description" value={newMovie.description} onChange={handleInputChange} />
+          </label>
+
+          <label>
+            Genre:
+            <textarea name="genre" value={newMovie.genre} onChange={handleInputChange} />
           </label>
 
           <label>

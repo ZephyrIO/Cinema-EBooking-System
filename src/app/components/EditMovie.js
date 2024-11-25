@@ -210,6 +210,15 @@ const EditMovie = () => {
           </label>
 
           <label>
+            Genre:
+            <textarea
+              name="genre"
+              value={editingMovie.genre}
+              onChange={handleInputChange}
+            />
+          </label>
+
+          <label>
             Trailer Link:
             <input
               type="text"
