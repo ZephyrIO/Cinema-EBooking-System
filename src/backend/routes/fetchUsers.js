@@ -1,53 +1,66 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const User = require('../models/User'); 
-const auth = require('../middleware/auth'); 
+const User = require('../models/User');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
 /**
  * Route: Update a user's profile
  * Requires Authentication
  */
-router.put('/users', auth, async (req, res) => {
-  const {
-    name, phone, password, street, city, state, zip, promotions, paymentCards
-  } = req.body;
-
-  console.log('Received profile update request:', req.body);
+router.put('/users/update/:id', auth, async (req, res) => {
+  const targetUserId = req.params.id;
 
   try {
-    const user = await User.findById(req.user);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    // Ensure the authenticated user is an admin
+    const adminUser = await User.findById(req.user);
+    if (!adminUser || !adminUser.isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized, only admins can update other users.' });
     }
 
-    console.log('Updating user:', user.email);
-
-    // Update user fields (email is not modifiable)
-    user.name = name || user.name;
-    user.phone = phone || user.phone;
-
-    // Update password if provided and different from current one
-    if (password && password !== user.password) {
-      user.password = await bcrypt.hash(password, 10);
+    // Find the target user by ID
+    const userToUpdate = await User.findById(targetUserId);
+    if (!userToUpdate) {
+      return res.status(404).json({ message: 'User not found.' });
     }
 
-    // Update address and card details (ensure max 4 cards)
-    user.address = { street, city, state, zip };
-    user.paymentCards = (paymentCards && paymentCards.length > 0)
-      ? paymentCards.slice(0, 4)
-      : user.paymentCards;
+    // Extract fields to update from the request body
+    const {
+      name, phone, password, street, city, state, zip, promotions, paymentCards
+    } = req.body;
 
-    user.promotions = promotions !== undefined ? promotions : user.promotions;
+    // Update user fields
+    userToUpdate.name = name || userToUpdate.name;
+    userToUpdate.phone = phone || userToUpdate.phone;
 
-    const updatedUser = await user.save();
-    console.log('Profile successfully updated for:', user.email);
+    // Update password if provided
+    if (password && password !== userToUpdate.password) {
+      userToUpdate.password = await bcrypt.hash(password, 10);
+    }
+
+    // Update address
+    userToUpdate.address = {
+      street: street || userToUpdate.address.street,
+      city: city || userToUpdate.address.city,
+      state: state || userToUpdate.address.state,
+      zip: zip || userToUpdate.address.zip,
+    };
+
+    // Update payment cards (max 4)
+    userToUpdate.paymentCards = paymentCards ? paymentCards.slice(0, 4) : userToUpdate.paymentCards;
+
+    // Update promotions
+    userToUpdate.promotions = promotions !== undefined ? promotions : userToUpdate.promotions;
+
+    // Save updated user
+    const updatedUser = await userToUpdate.save();
     res.json(updatedUser);
   } catch (error) {
-    console.error('Error updating profile:', error);
-    res.status(500).json({ message: 'Error updating profile.', error });
+    console.error('Error updating user:', error);
+    res.status(500).json({ message: 'Error updating user.', error });
   }
 });
+
 
 /**
  * Route: Get a specific user's profile
@@ -115,6 +128,8 @@ router.get('/public-users', async (req, res) => {
  * Requires Authentication and Admin privilege
  */
 router.put('/users/grant-admin/:id', auth, async (req, res) => {
+  console.log('Request received for user update:', req.params.id);
+  console.log('Request body:', req.body);
   try {
     const userId = req.params.id;
 
@@ -161,7 +176,7 @@ router.put('/users/remove-admin/:id', auth, async (req, res) => {
 // DELETE /api/users/:id
 router.delete('/users/delete/:id', auth, async (req, res) => {
   const { id } = req.params;
-  console.log('Delete Request for user ID:', id); // Log the received user ID
+  console.log('Delete Request for user ID:', id);
 
   try {
     const deletedUser = await User.findByIdAndDelete(id);
@@ -170,11 +185,69 @@ router.delete('/users/delete/:id', auth, async (req, res) => {
     }
     res.status(200).json({ message: 'User deleted successfully.' });
   } catch (err) {
-    console.error(err);
+    console.error('Error deleting user:', err);
     res.status(500).json({ message: 'Error deleting user.' });
   }
 });
 
+router.put('/users/suspend/:id', auth, async (req, res) => {
+  try {
+      const { id } = req.params;
 
+      // Ensure the authenticated user is an admin
+      const adminUser = await User.findById(req.user);
+      if (!adminUser || !adminUser.isAdmin) {
+          return res.status(403).json({ msg: 'Unauthorized, only admins can suspend users.' });
+      }
+
+      // Find the target user by ID
+      const userToSuspend = await User.findById(id);
+      if (!userToSuspend) {
+          return res.status(404).json({ msg: 'User not found.' });
+      }
+
+      // Set the suspended field to true
+      userToSuspend.suspended = true;
+
+      // Save the updated user data
+      await userToSuspend.save();
+
+      // Respond with the updated user
+      res.status(200).json({ msg: 'User suspended successfully.', user: userToSuspend });
+  } catch (err) {
+      console.error('Error suspending user:', err);
+      res.status(500).json({ msg: 'Error suspending user.', error: err.message });
+  }
+});
+
+router.put('/users/unsuspend/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Ensure the authenticated user is an admin
+    const adminUser = await User.findById(req.user);
+    if (!adminUser || !adminUser.isAdmin) {
+      return res.status(403).json({ msg: 'Unauthorized, only admins can unsuspend users.' });
+    }
+
+    // Find the target user by ID
+    const userToUnsuspend = await User.findById(id);
+    if (!userToUnsuspend) {
+      return res.status(404).json({ msg: 'User not found.' });
+    }
+
+    // Set the suspended field to false
+    userToUnsuspend.suspended = false;
+
+    // Save the updated user data
+    await userToUnsuspend.save();
+
+    // Respond with the updated user
+    res.status(200).json({ msg: 'User unsuspended successfully.', user: userToUnsuspend });
+  } catch (err) {
+    console.error('Error unsuspending user:', err);
+    res.status(500).json({ msg: 'Error unsuspending user.', error: err.message });
+  }
+});
 
 module.exports = router;
