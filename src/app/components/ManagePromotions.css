@@ -1,8 +1,27 @@
 .add-promotion-btn {
-  margin: 20px 0;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 14px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  align-self: center;
+  margin: 0 auto; 
+  display: block;
+}
+
+.send-promotions-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: center;
+  margin: 0 auto; 
+  display: block;
 }
 
 .modal-overlay {
@@ -51,4 +70,21 @@
 .cancel-btn {
   background: #ccc;
   margin-top: 10px;
+}
+
+.promotion-item .delete-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: center;
+  margin: 0 auto; 
+  display: block;
+}
+
+.promotion-item .delete-btn:hover {
+  background: #e63939;
 }
