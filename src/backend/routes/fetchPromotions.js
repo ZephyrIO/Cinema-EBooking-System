@@ -1,11 +1,11 @@
 const express = require('express');
-const Promotion = require('../models/Promotions'); // Import the Promotion model
+const Promotion = require('../models/Promotions');
 const router = express.Router();
 
 // Route to get all promotions
 router.get('/promotions', async (req, res) => {
   try {
-    const promotions = await Promotion.find(); // Fetch all promotions using Mongoose
+    const promotions = await Promotion.find();
     res.json(promotions);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -35,7 +35,7 @@ router.post('/promotions', async (req, res) => {
   });
 
   try {
-    const savedPromotion = await newPromotion.save(); // Save the promotion to the database
+    const savedPromotion = await newPromotion.save();
     res.status(201).json(savedPromotion);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -45,7 +45,6 @@ router.post('/promotions', async (req, res) => {
 // Route to update an existing promotion
 router.put('/promotions/:id', async (req, res) => {
   try {
-    // Update the promotion with new data
     const updatedPromotion = await Promotion.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -58,8 +57,22 @@ router.put('/promotions/:id', async (req, res) => {
 
     res.status(200).json(updatedPromotion);
   } catch (error) {
-    console.error('Error updating promotion:', error.message);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// Route to delete a promotion
+router.delete('/promotions/:id', async (req, res) => {
+  try {
+    const deletedPromotion = await Promotion.findByIdAndDelete(req.params.id);
+
+    if (!deletedPromotion) {
+      return res.status(404).json({ message: 'Promotion not found' });
+    }
+
+    res.status(200).json({ message: 'Promotion deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
