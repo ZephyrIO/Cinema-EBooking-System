@@ -16,6 +16,7 @@ export default function Register() {
     city: '',
     state: '',
     zip: '',
+    recievePromotions: false,
   });
 
   const router = useRouter();
@@ -77,6 +78,15 @@ export default function Register() {
         <input type="text" name="city" placeholder="City" value={formData.city} onChange={handleInputChange} />
         <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleInputChange} />
         <input type="text" name="zip" placeholder="Zip Code" value={formData.zip} onChange={handleInputChange} />
+        <label>
+          <input
+            type="checkbox"
+            name="recievePromotions"
+            checked={formData.recievePromotions}
+            onChange={handleInputChange}
+          />
+          Register for promotions
+        </label>
         <div className="button-group">
           <button type="submit" className="register">Register</button>
           <button type="button" className="login" onClick={handleLogin}>Login</button>

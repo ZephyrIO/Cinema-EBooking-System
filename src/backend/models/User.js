@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   status: { type: String, default: 'inactive' },
   isAdmin: { type: Boolean, default: false },
+  recievePromotions: { type: Boolean, default: false },
   resetPasswordToken: { type: String },  
   resetPasswordExpires: { type: Date },   
   createdAt: { type: Date, default: Date.now },

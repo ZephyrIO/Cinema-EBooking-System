@@ -10,7 +10,7 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 // POST route for user registration
 router.post('/register', async (req, res) => {
-    const { email, password, name, phone, cardType, cardNumber, expirationDate, street, city, state, zip } = req.body;
+    const { email, password, name, phone, cardType, cardNumber, expirationDate, street, city, state, zip, recievePromotions } = req.body;
 
     try {
         // Check if the user already exists
@@ -36,6 +36,7 @@ router.post('/register', async (req, res) => {
             address: { street, city, state, zip },
             status: 'inactive',
             isAdmin: false,
+            recievePromotions: !!recievePromotions
         });
         const jwtSecret = process.env.JWT_SECRET || 'fallbackSecret';
         // Save the user to the database
