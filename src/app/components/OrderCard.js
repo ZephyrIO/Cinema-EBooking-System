@@ -7,7 +7,8 @@ const OrderCard = ({ order }) => {
     return (
         <div>
             <h4>Tickets for {order.movie.title} at {order.movie.showtime}</h4>
-            <p>Purchased {order.tickets.length} tickets for a total of {order.totalAmount}</p>
+            <p>Purchased {order.tickets.length} tickets for a total of ${order.totalAmount}</p>
+            <br />
         </div>
     );
 };
