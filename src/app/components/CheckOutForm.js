@@ -42,7 +42,7 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     return parseFloat(totalWithFees.toFixed(3)); // Round to two decimal places
   };
   
-  // Calculate the discounted total price
+  // Calculate the discounted total prices
   const calculateTotalAfterDiscount = () => {
     const totalBeforeDiscount = calculateTotalBeforeDiscount();
     const totalWithDiscount = totalBeforeDiscount * ((100 - promoDiscount) / 100);
