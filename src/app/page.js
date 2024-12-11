@@ -128,6 +128,11 @@ const HomePage = () => {
             <button onClick={() => router.push('/register')}>Register</button>
             <button onClick={() => router.push('/EditProfile')} disabled={userData == undefined}>Edit Profile</button>
             {(isToken) ? (
+              <button onClick={() => {
+                router.push('/order-history');
+              }}>Order History</button>
+              ) : (<></>)}
+            {(isToken) ? (
               userData.user.isAdmin ? (
                 <button onClick={() => {
                   router.push('/AdminMainScreen');
