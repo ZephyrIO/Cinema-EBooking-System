@@ -1,28 +1,34 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import OrderConfirmation from '../components/OrderConfirmation';
 
 const OrderConfirmationPage = () => {
+  const searchParams = useSearchParams();
   const [bookingDetails, setBookingDetails] = useState(null);
 
-  
   useEffect(() => {
-    const mockBookingDetails = {
-      bookingNumber: 'ABC123456',
+    // Extract query parameters from URL
+    const movieTitle = searchParams.get('movie');
+    const showtime = searchParams.get('showtime');
+    const date = searchParams.get('date');
+    const seats = JSON.parse(searchParams.get('seats') || '[]');
+    const totalAmount = searchParams.get('totalAmount');
+
+    // Create a booking details object from the parameters
+    const bookingDetails = {
+      bookingNumber: Math.random().toString(36).substr(2, 9).toUpperCase(),
       movie: {
-        title: 'Inception',
-        showtime: '5:00 PM',
+        title: movieTitle,
+        showtime,
+        date,
       },
-      seats: [
-        { seatNumber: 'A1', seatType: 'adult' },
-        { seatNumber: 'A2', seatType: 'child' },
-      ],
-      totalAmount: '42.50',
+      seats,
+      totalAmount,
     };
-    
-   
-    setBookingDetails(mockBookingDetails);
-  }, []);
+
+    setBookingDetails(bookingDetails);
+  }, [searchParams]);
 
   return (
     <div>
