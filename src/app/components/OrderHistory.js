@@ -20,7 +20,10 @@ export default function ManageUsers ()
             
             try {
                 const response = await axios.get('/api/orders/');
-                setOrders(response.data);
+                const unfilteredOrders = response.data;
+                const userEmail = userData.user.email;
+                const filteredData = unfilteredOrders.filter(order => order.email === userEmail);
+                setOrders(filteredData);
             } catch (err) {
                 console.error('Error fetching orders:', err);
                 setError('Failed to load orders.');
@@ -28,12 +31,6 @@ export default function ManageUsers ()
         };
         
         fetchOrders();
-
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        const userEmail = userData.user.email;
-        console.log(JSON.parse(localStorage.getItem('userData')));
-        const filteredData = orders.filter(order => order.email === userEmail);
-        setOrders(filteredData);
     }, []);
 
     const handleGoHome = () => {
