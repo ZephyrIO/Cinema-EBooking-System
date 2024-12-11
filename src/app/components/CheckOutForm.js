@@ -56,7 +56,7 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     return parseFloat(discountAmount.toFixed(3)); // Round to two decimal places
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     const paymentInfo = userHasLinkedPayment
