@@ -32,9 +32,15 @@ const OrderConfirmationPage = () => {
 
   return (
     <div>
-      <OrderConfirmation bookingDetails={bookingDetails} />
+      <div>
+        <OrderConfirmation bookingDetails={bookingDetails} />
+      </div>
+      <div>
+        <button type="button" className="cancel" onClick={() => window.location.href = '/'}>Home</button>
+      </div>
     </div>
   );
+  
 };
 
 export default OrderConfirmationPage;
