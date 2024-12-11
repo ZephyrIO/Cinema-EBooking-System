@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios for HTTP requests
+import axios from 'axios';
 import styles from './CheckOutForm.css';
 
-const CheckOutForm = ({ 
-  movieDetails, 
-  userDetails, 
-  onConfirm, 
-  onCancel, 
-  userHasLinkedPayment, 
-  selectedSeats, 
-  seatCategories 
-}) => {
-  const [name, setName] = useState(userDetails.name); // Set the initial value from userDetails
-  const [email, setEmail] = useState(userDetails.email); // Set the initial value from userDetails
+const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment, selectedSeats, seatCategories }) => {
+  const [name, setName] = useState(userDetails.name); 
+  const [email, setEmail] = useState(userDetails.email); 
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoMessage, setPromoMessage] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
@@ -26,19 +19,19 @@ const CheckOutForm = ({
   const salesTax = 0.08;
   const onlineFee = 2.5;
 
-  // Promo code logic
-  const validPromoCodes = { DISCOUNT10: 10 }; // Example: 10% discount for valid code
-
-  useEffect(() => {
-    if (validPromoCodes[promoCode]) {
-      setPromoDiscount(validPromoCodes[promoCode]);
-    } else {
+  const validatePromoCode = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/validate-promo', { promoCode });
+      setPromoDiscount(response.data.discount);
+      setPromoMessage(response.data.message);
+    } catch (error) {
       setPromoDiscount(0);
+      setPromoMessage(error.response?.data?.message || 'Failed to validate promo code');
     }
-  }, [promoCode]);
+  };
 
-  // Calculate the total based on the selected seats and their types (adult/child)
-  const calculateTotal = () => {
+  // Calculate the total price before the discount
+  const calculateTotalBeforeDiscount = () => {
     const ticketTotal = selectedSeats.reduce((sum, seat, index) => {
       const seatType = seatCategories[index];
       return sum + ticketPrices[seatType];
@@ -46,11 +39,24 @@ const CheckOutForm = ({
     const totalBeforeTaxAndFees = ticketTotal;
     const totalAfterTax = totalBeforeTaxAndFees * (1 + salesTax);
     const totalWithFees = totalAfterTax + onlineFee;
-    const totalWithDiscount = totalWithFees * ((100 - promoDiscount) / 100);
-    return totalWithDiscount.toFixed(2);
+    return parseFloat(totalWithFees.toFixed(3)); // Round to two decimal places
+  };
+  
+  // Calculate the discounted total price
+  const calculateTotalAfterDiscount = () => {
+    const totalBeforeDiscount = calculateTotalBeforeDiscount();
+    const totalWithDiscount = totalBeforeDiscount * ((100 - promoDiscount) / 100);
+    return parseFloat(totalWithDiscount.toFixed(3)); // Round to two decimal places
+  };
+  
+  // Calculate the discount amount
+  const calculateDiscountAmount = () => {
+    const totalBeforeDiscount = calculateTotalBeforeDiscount();
+    const discountAmount = totalBeforeDiscount - calculateTotalAfterDiscount();
+    return parseFloat(discountAmount.toFixed(3)); // Round to two decimal places
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const paymentInfo = userHasLinkedPayment
@@ -65,7 +71,7 @@ const CheckOutForm = ({
         seatNumber: seat,
         seatType: seatCategories[index],
       })),
-      totalAmount: calculateTotal(),
+      totalAmount: calculateTotalAfterDiscount(),
       movie: movieDetails,
       promoCode,
     };
@@ -105,7 +111,7 @@ const CheckOutForm = ({
           <input
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)} // Allow editing
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
@@ -114,7 +120,7 @@ const CheckOutForm = ({
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} // Allow editing
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -137,10 +143,13 @@ const CheckOutForm = ({
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
           />
-          {promoDiscount > 0 && <p>Promo applied: {promoDiscount}% off</p>}
+          <button type="button" onClick={validatePromoCode}>Apply Promo</button>
+          {promoMessage && <p>{promoMessage}</p>}
         </div>
 
-        <h3>Total: ${calculateTotal()}</h3>
+        <h3>Original Total: ${calculateTotalBeforeDiscount()}</h3>
+        {promoDiscount > 0 && <h3>Discount: -${calculateDiscountAmount()}</h3>}
+        <h3>Total After Discount: ${calculateTotalAfterDiscount()}</h3>
 
         {!userHasLinkedPayment && (
           <>

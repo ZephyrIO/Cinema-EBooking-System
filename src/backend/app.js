@@ -8,6 +8,8 @@ const loginRouter = require('./routes/login');
 const userRouter = require('./routes/fetchUsers');
 const promotionRouter = require('./routes/fetchPromotions');
 const emailRoutes = require('./routes/emailRoutes');
+const orderRouter = require('./routes/fetchOrders');
+const validatePromoCodeRouter = require('./routes/validatePromoCode');
 const app = express();
 
 // Enable CORS for requests from port 3000 (frontend)
@@ -27,12 +29,14 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 // Use the routes
+app.use('/api', validatePromoCodeRouter);
 app.use('/api', moviesRouter);
 app.use('/api', registerRouter);  // Add register router
 app.use('/api', loginRouter);
 app.use('/api', userRouter);
 app.use('/api', promotionRouter);
 app.use('/api', emailRoutes);
+app.use('/api', orderRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

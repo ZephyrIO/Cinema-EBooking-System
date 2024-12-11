@@ -70,4 +70,8 @@
     font-size: 1.4em;
     color: #333;
   }
-  
+  p {
+    text-align: center;
+    font-size: 1.2em;
+    color: gray;
+  }

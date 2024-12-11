@@ -1,46 +1,121 @@
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .user-card-container {
-    margin: 20px;
-    width: 500px;
-    height: 200px;
-    background-color: #ffffff1a;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .button-group {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .button-group button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .button-group button:hover {
-    background-color: #3e8e41;
-  }
+/* Ensure the entire container is centered */
+.adminMainScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 30px;
+}
 
-  .user-card-container {
-    margin: 20px auto;
-  }
-  
-  .title {
-    text-align: center;
-  }
+/* Style for the form container */
+.edit-user-form {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px; /* Limit the width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 30px 0;
+}
+
+/* Title of the form */
+.edit-user-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Styling for input fields */
+.edit-user-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Focus state for input fields */
+.edit-user-form input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background-color: #fff;
+}
+
+/* Buttons in the form */
+.edit-user-form button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.edit-user-form button:hover {
+  background-color: #45a049;
+}
+
+/* Cancel button with distinct styling */
+.edit-user-form button.cancel {
+  background-color: #f44336;
+}
+
+.edit-user-form button.cancel:hover {
+  background-color: #e53935;
+}
+
+/* Add spacing between user cards */
+.user-card-container {
+  margin: 20px auto;
+  width: 500px;
+  height: auto;
+  background-color: #ffffff1a;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button group layout */
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Button styles within button group */
+.button-group button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for button group buttons */
+.button-group button:hover {
+  background-color: #45a049;
+}
+
+/* Title styling */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+}
