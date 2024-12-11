@@ -8,6 +8,7 @@ const loginRouter = require('./routes/login');
 const userRouter = require('./routes/fetchUsers');
 const promotionRouter = require('./routes/fetchPromotions');
 const emailRoutes = require('./routes/emailRoutes');
+const orderRouter = require('./routes/fetchOrders');
 const validatePromoCodeRouter = require('./routes/validatePromoCode');
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/api', loginRouter);
 app.use('/api', userRouter);
 app.use('/api', promotionRouter);
 app.use('/api', emailRoutes);
+app.use('/api', orderRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
