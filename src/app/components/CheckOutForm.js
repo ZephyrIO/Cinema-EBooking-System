@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios for HTTP requests
 import styles from './CheckOutForm.css';
-const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment, selectedSeats, seatCategories }) => {
+
+const CheckOutForm = ({ 
+  movieDetails, 
+  userDetails, 
+  onConfirm, 
+  onCancel, 
+  userHasLinkedPayment, 
+  selectedSeats, 
+  seatCategories 
+}) => {
   const [name, setName] = useState(userDetails.name); // Set the initial value from userDetails
   const [email, setEmail] = useState(userDetails.email); // Set the initial value from userDetails
   const [promoCode, setPromoCode] = useState('');
@@ -11,13 +21,13 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
 
   const ticketPrices = {
     adult: 15,
-    child: 10
+    child: 10,
   };
-  const salesTax = 0.08; 
-  const onlineFee = 2.5; 
+  const salesTax = 0.08;
+  const onlineFee = 2.5;
 
   // Promo code logic
-  const validPromoCodes = { 'DISCOUNT10': 10 }; // Example: 10% discount for valid code
+  const validPromoCodes = { DISCOUNT10: 10 }; // Example: 10% discount for valid code
 
   useEffect(() => {
     if (validPromoCodes[promoCode]) {
@@ -40,10 +50,12 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     return totalWithDiscount.toFixed(2);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const paymentInfo = userHasLinkedPayment ? 'linked' : { cardNumber, expiryDate, cvv };
+    const paymentInfo = userHasLinkedPayment
+      ? 'linked'
+      : { cardNumber, expiryDate, cvv };
 
     const bookingDetails = {
       name,
@@ -51,14 +63,37 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       paymentInfo,
       seats: selectedSeats.map((seat, index) => ({
         seatNumber: seat,
-        seatType: seatCategories[index]
+        seatType: seatCategories[index],
       })),
       totalAmount: calculateTotal(),
       movie: movieDetails,
-      promoCode
+      promoCode,
     };
 
-    onConfirm(bookingDetails);
+    try {
+      // Send the booking details via email using axios.post
+      const confirmationEmail = [
+        {
+          title: `Booking Confirmation - ${movieDetails.title}`,
+          description: `
+            Thank you for booking with us, ${name}!
+            Movie: ${movieDetails.title}
+            Seats: ${selectedSeats.join(', ')}
+            Total Amount: $${calculateTotal()}
+          `,
+          code: promoCode || 'N/A',
+          discount: promoDiscount,
+        },
+      ];
+
+      await axios.post('/api/sendEmail', { email, confirmationEmail});
+
+      alert(`Booking confirmed and email sent to ${email}`);
+      onConfirm(bookingDetails);
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      alert('Failed to send confirmation email. Please try again.');
+    }
   };
 
   return (
@@ -83,7 +118,7 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
             required
           />
         </div>
-        
+
         <div>
           <label>Selected Seats:</label>
           <ul>
