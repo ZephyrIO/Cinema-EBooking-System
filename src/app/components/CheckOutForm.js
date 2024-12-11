@@ -61,31 +61,32 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
   
     const paymentInfo = userHasLinkedPayment ? 'linked' : { cardNumber, expiryDate, cvv };
   
+    const tickets = selectedSeats.map((seat, index) => ({
+      seatNumber: seat,
+      seatType: seatCategories[index], // Use seatType to match the backend schema
+      quantity: 1, // Add a default quantity of 1 for each ticket
+    }));
+  
     const bookingDetails = {
       name,
       email,
       paymentInfo,
-      tickets: selectedSeats.map((seat, index) => ({
-        seatNumber: seat,
-        seatType: seatCategories[index],
-      })),
+      tickets,
       totalAmount: calculateTotalAfterDiscount(),
       movie: movieDetails,
       promoCode,
     };
   
     try {
-      // Submit the order
+      console.log('Submitting order with details:', bookingDetails); // Debug log
       const response = await axios.post('http://localhost:3001/api/submit-order', bookingDetails);
   
       if (response.status === 201) {
         alert(`Booking confirmed! Booking Number: ${response.data.bookingNumber}`);
         onConfirm(response.data); // Pass the booking details back to the parent component
-      } else {
-        alert('Booking was successful, but there was an issue with the confirmation email.');
       }
     } catch (error) {
-      console.error('Error during checkout:', error);
+      console.error('Checkout error:', error.response?.data || error.message);
       alert('There was an issue with your checkout. Please try again.');
     }
   };

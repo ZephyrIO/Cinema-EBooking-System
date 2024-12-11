@@ -1,23 +1,19 @@
 const mongoose = require('mongoose');
 
+const ticketSchema = new mongoose.Schema({
+  seatNumber: { type: String, required: true },
+  seatType: { type: String, required: true }, // Rename `seatType` to `type` if required
+  quantity: { type: Number, required: true },
+});
+
 const orderSchema = new mongoose.Schema({
   bookingNumber: { type: String, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  tickets: [
-    {
-      type: { type: String, enum: ['adult', 'child'], required: true },
-      quantity: { type: Number, required: true }
-    }
-  ],
+  tickets: { type: [ticketSchema], required: true },
   totalAmount: { type: Number, required: true },
-  movie: {
-    title: { type: String, required: true },
-  },
+  movie: { type: Object, required: true },
   promoCode: { type: String },
-  promoDiscount: { type: Number },
-}, { timestamps: true });
+});
 
-const Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order;
+module.exports = mongoose.model('Order', orderSchema);

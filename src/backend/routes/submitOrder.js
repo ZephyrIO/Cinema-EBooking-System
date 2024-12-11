@@ -9,10 +9,15 @@ const router = express.Router();
 router.post('/submit-order', async (req, res) => {
   const { name, email, paymentInfo, tickets, totalAmount, movie, promoCode } = req.body;
 
-  // Generate a unique booking number
+  console.log('Received order data:', req.body); // Log the request body
+
+  if (!name || !email || !Array.isArray(tickets) || tickets.length === 0 || !movie || !totalAmount) {
+    console.error('Validation failed: Missing required fields');
+    return res.status(400).json({ message: 'Validation failed: Missing required fields' });
+  }
+
   const bookingNumber = uuidv4();
 
-  // Create a new order object
   const newOrder = new Order({
     bookingNumber,
     name,
@@ -25,16 +30,19 @@ router.post('/submit-order', async (req, res) => {
 
   try {
     // Save the order in MongoDB
+    console.log('Saving order to database...');
     const savedOrder = await newOrder.save();
+    console.log('Order saved:', savedOrder);
 
     // Send confirmation email
-    sendConfirmationEmail(email, savedOrder);
+    console.log('Sending confirmation email...');
+    await sendConfirmationEmail(email, savedOrder);
+    console.log('Confirmation email sent successfully');
 
-    // Return the saved order details and booking number to the frontend
     res.status(201).json({ bookingNumber, ...savedOrder._doc });
   } catch (error) {
-    console.error('Error saving order:', error);
-    res.status(500).json({ message: 'Error saving order' });
+    console.error('Error processing order:', error.stack); // Log the error stack
+    res.status(500).json({ message: 'Error processing order', error: error.message });
   }
 });
 

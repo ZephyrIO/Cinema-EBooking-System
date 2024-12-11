@@ -10,6 +10,7 @@ const promotionRouter = require('./routes/fetchPromotions');
 const emailRoutes = require('./routes/emailRoutes');
 const orderRouter = require('./routes/fetchOrders');
 const validatePromoCodeRouter = require('./routes/validatePromoCode');
+const submitOrderRouter = require('./routes/submitOrder');
 const app = express();
 
 // Enable CORS for requests from port 3000 (frontend)
@@ -37,6 +38,7 @@ app.use('/api', userRouter);
 app.use('/api', promotionRouter);
 app.use('/api', emailRoutes);
 app.use('/api', orderRouter);
+app.use('/api', submitOrderRouter);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
