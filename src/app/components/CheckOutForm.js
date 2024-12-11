@@ -3,8 +3,8 @@ import axios from 'axios';
 import styles from './CheckOutForm.css';
 
 const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasLinkedPayment, selectedSeats, seatCategories }) => {
-  const [name, setName] = useState(userDetails.name); 
-  const [email, setEmail] = useState(userDetails.email); 
+  const [name, setName] = useState(userDetails?.name || ''); 
+  const [email, setEmail] = useState(userDetails?.email || ''); 
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [promoMessage, setPromoMessage] = useState('');
@@ -12,12 +12,36 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
 
-  const ticketPrices = {
-    adult: 15,
-    child: 10,
+  const handleGoHome = () => {
+    window.location.href = '/'; // Navigate to home page
   };
-  const salesTax = 0.08; 
-  const onlineFee = 2.5; 
+
+  useEffect(() => {
+    const token = localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')).token : null;
+
+    if (token) {
+      axios.get('http://localhost:3001/api/users', {
+        headers: { 'Authorization': `Bearer ${token}` },
+      })
+      .then(response => {
+        const userData = response.data;
+
+        if (userData) {
+          setName(userData.name || '');
+          setEmail(userData.email || '');
+          if (userData.paymentCards && userData.paymentCards.length > 0) {
+            const defaultCard = userData.paymentCards[0];
+            setCardNumber(defaultCard.cardNumber || '');
+            setExpiryDate(defaultCard.expirationDate || '');
+            setCvv(defaultCard.cvv || '');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Failed to fetch user data:', error);
+      });
+    }
+  }, []);
 
   const validatePromoCode = async () => {
     try {
@@ -30,37 +54,33 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     }
   };
 
-  // Calculate the total price before the discount
   const calculateTotalBeforeDiscount = () => {
+    const ticketPrices = { adult: 15, child: 10 };
+    const salesTax = 0.08; 
+    const onlineFee = 2.5;
+
     const ticketTotal = selectedSeats.reduce((sum, seat, index) => {
       const seatType = seatCategories[index];
       return sum + ticketPrices[seatType];
     }, 0);
-    const totalBeforeTaxAndFees = ticketTotal;
-    const totalAfterTax = totalBeforeTaxAndFees * (1 + salesTax);
-    const totalWithFees = totalAfterTax + onlineFee;
-    return parseFloat(totalWithFees.toFixed(3)); // Round to two decimal places
+
+    const totalAfterTax = ticketTotal * (1 + salesTax);
+    return parseFloat((totalAfterTax + onlineFee).toFixed(2));
   };
-  
-  // Calculate the discounted total prices
+
   const calculateTotalAfterDiscount = () => {
-    const totalBeforeDiscount = calculateTotalBeforeDiscount();
-    const totalWithDiscount = totalBeforeDiscount * ((100 - promoDiscount) / 100);
-    return parseFloat(totalWithDiscount.toFixed(3)); // Round to two decimal places
+    return parseFloat((calculateTotalBeforeDiscount() * ((100 - promoDiscount) / 100)).toFixed(2));
   };
-  
-  // Calculate the discount amount
+
   const calculateDiscountAmount = () => {
-    const totalBeforeDiscount = calculateTotalBeforeDiscount();
-    const discountAmount = totalBeforeDiscount - calculateTotalAfterDiscount();
-    return parseFloat(discountAmount.toFixed(3)); // Round to two decimal places
+    return parseFloat((calculateTotalBeforeDiscount() - calculateTotalAfterDiscount()).toFixed(2));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const paymentInfo = userHasLinkedPayment ? 'linked' : { cardNumber, expiryDate, cvv };
-  
+
     const bookingDetails = {
       name,
       email,
@@ -73,14 +93,13 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       movie: movieDetails,
       promoCode,
     };
-  
+
     try {
-      // Submit the order
       const response = await axios.post('http://localhost:3001/api/submit-order', bookingDetails);
-  
+
       if (response.status === 201) {
         alert(`Booking confirmed! Booking Number: ${response.data.bookingNumber}`);
-        onConfirm(response.data); // Pass the booking details back to the parent component
+        onConfirm(response.data);
       } else {
         alert('Booking was successful, but there was an issue with the confirmation email.');
       }
@@ -89,7 +108,12 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       alert('There was an issue with your checkout. Please try again.');
     }
   };
-  
+
+  const handleCancel = () => {
+    if (window.confirm("Are you sure you want to cancel the checkout?")) {
+      onCancel();
+    }
+  };
 
   return (
     <div className="checkout-form">
@@ -97,85 +121,37 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div>
           <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-        
-        <div>
-          <label>Selected Seats:</label>
-          <ul>
-            {selectedSeats.map((seat, index) => (
-              <li key={seat}>
-                Seat {seat} - {seatCategories[index] === 'adult' ? 'Adult ($15)' : 'Child ($10)'}
-              </li>
-            ))}
-          </ul>
-        </div>
-
         <div>
           <label>Promo Code:</label>
-          <input
-            type="text"
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
-          />
+          <input type="text" value={promoCode} onChange={(e) => setPromoCode(e.target.value)} />
           <button type="button" onClick={validatePromoCode}>Apply Promo</button>
           {promoMessage && <p>{promoMessage}</p>}
         </div>
-
-        <h3>Original Total: ${calculateTotalBeforeDiscount()}</h3>
-        {promoDiscount > 0 && <h3>Discount: -${calculateDiscountAmount()}</h3>}
         <h3>Total After Discount: ${calculateTotalAfterDiscount()}</h3>
-
         {!userHasLinkedPayment && (
           <>
             <div>
               <label>Card Number:</label>
-              <input
-                type="text"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-                required
-              />
+              <input type="text" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} required />
             </div>
             <div>
               <label>Expiry Date:</label>
-              <input
-                type="text"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
-                required
-              />
+              <input type="text" value={expiryDate} onChange={(e) => setExpiryDate(e.target.value)} required />
             </div>
             <div>
               <label>CVV:</label>
-              <input
-                type="text"
-                value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
-                required
-              />
+              <input type="text" value={cvv} onChange={(e) => setCvv(e.target.value)} required />
             </div>
           </>
         )}
-
-        <div>
-          <button type="submit">Confirm Checkout</button>
-          <button type="button" onClick={onCancel}>Cancel</button>
-        </div>
+        <button type="submit">Confirm Checkout</button>
+        <button type="button" className="cancel" onClick={handleGoHome}>Cancel</button>
       </form>
     </div>
   );
