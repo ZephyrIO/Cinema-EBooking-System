@@ -16,8 +16,8 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     adult: 15,
     child: 10,
   };
-  const salesTax = 0.08;
-  const onlineFee = 2.5;
+  const salesTax = 0.08; 
+  const onlineFee = 2.5; 
 
   const validatePromoCode = async () => {
     try {
@@ -56,18 +56,16 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
     return parseFloat(discountAmount.toFixed(3)); // Round to two decimal places
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const paymentInfo = userHasLinkedPayment
-      ? 'linked'
-      : { cardNumber, expiryDate, cvv };
-
+  
+    const paymentInfo = userHasLinkedPayment ? 'linked' : { cardNumber, expiryDate, cvv };
+  
     const bookingDetails = {
       name,
       email,
       paymentInfo,
-      seats: selectedSeats.map((seat, index) => ({
+      tickets: selectedSeats.map((seat, index) => ({
         seatNumber: seat,
         seatType: seatCategories[index],
       })),
@@ -75,32 +73,23 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
       movie: movieDetails,
       promoCode,
     };
-
+  
     try {
-      // Send the booking details via email using axios.post
-      const confirmationEmail = [
-        {
-          title: `Booking Confirmation - ${movieDetails.title}`,
-          description: `
-            Thank you for booking with us, ${name}!
-            Movie: ${movieDetails.title}
-            Seats: ${selectedSeats.join(', ')}
-            Total Amount: $${calculateTotal()}
-          `,
-          code: promoCode || 'N/A',
-          discount: promoDiscount,
-        },
-      ];
-
-      await axios.post('/api/sendEmail', { email, confirmationEmail});
-
-      alert(`Booking confirmed and email sent to ${email}`);
-      onConfirm(bookingDetails);
+      // Submit the order
+      const response = await axios.post('http://localhost:3001/api/submit-order', bookingDetails);
+  
+      if (response.status === 201) {
+        alert(`Booking confirmed! Booking Number: ${response.data.bookingNumber}`);
+        onConfirm(response.data); // Pass the booking details back to the parent component
+      } else {
+        alert('Booking was successful, but there was an issue with the confirmation email.');
+      }
     } catch (error) {
-      console.error('Error sending confirmation email:', error);
-      alert('Failed to send confirmation email. Please try again.');
+      console.error('Error during checkout:', error);
+      alert('There was an issue with your checkout. Please try again.');
     }
   };
+  
 
   return (
     <div className="checkout-form">
@@ -124,7 +113,7 @@ const CheckOutForm = ({ movieDetails, userDetails, onConfirm, onCancel, userHasL
             required
           />
         </div>
-
+        
         <div>
           <label>Selected Seats:</label>
           <ul>

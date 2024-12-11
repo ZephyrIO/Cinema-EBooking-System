@@ -39,7 +39,7 @@ router.post('/submit-order', async (req, res) => {
 });
 
 // Email confirmation logic
-const sendConfirmationEmail = (toEmail, orderDetails) => {
+const sendConfirmationEmail = async(toEmail, orderDetails) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -52,23 +52,27 @@ const sendConfirmationEmail = (toEmail, orderDetails) => {
     from: '4050testemail@gmail.com',
     to: toEmail,
     subject: `Booking Confirmation - ${orderDetails.movie.title}`,
-    text: `
-      Hi ${orderDetails.name},
-      Your booking for the movie "${orderDetails.movie.title}" has been confirmed.
-      Booking Number: ${orderDetails.bookingNumber}
-      Number of Tickets: ${orderDetails.tickets.map(ticket => `${ticket.quantity} ${ticket.type} ticket(s)`).join(', ')}
-      Total Amount Paid: $${orderDetails.totalAmount}
-      Thank you for booking with us!
+    html: `
+      <h2>Booking Confirmation</h2>
+      <p>Hi ${orderDetails.name},</p>
+      <p>Thank you for your booking! Here are your booking details:</p>
+      <ul>
+        <li><strong>Booking Number:</strong> ${orderDetails.bookingNumber}</li>
+        <li><strong>Movie:</strong> ${orderDetails.movie.title}</li>
+        <li><strong>Total Amount Paid:</strong> $${orderDetails.totalAmount}</li>
+        <li><strong>Seats:</strong> ${orderDetails.tickets.map(ticket => ticket.seatNumber).join(', ')}</li>
+      </ul>
+      <p>We look forward to seeing you at the cinema!</p>
     `,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-    } else {
-      console.log('Email sent:', info.response);
-    }
-  });
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Confirmation email sent successfully');
+  } catch (error) {
+    console.error('Error sending confirmation email:', error);
+    throw error;
+  }
 };
 
 module.exports = router;
