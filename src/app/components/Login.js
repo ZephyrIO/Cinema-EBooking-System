@@ -51,27 +51,24 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Login button clicked');
     try {
-      const response = await axios.post('http://localhost:3001/api/login', formData);
-      const userData = response.data;
-      console.log("updated userData:", userData);
-      console.log(response.data);
-      setUserData({
-        token: response.data.token,
-        user: response.data.user,
-      });
-      localStorage.setItem('userData', JSON.stringify(userData));
-      if(userData.user.isAdmin) {
-        router.push('/AdminMainScreen');
-      } else {
-        router.push('/');
-      }
+        const response = await axios.post('http://localhost:3001/api/login', formData);
+        const userData = response.data;
+        setUserData({
+            token: response.data.token,
+            user: response.data.user,
+        });
+        localStorage.setItem('userData', JSON.stringify(userData));
+        if (userData.user.isAdmin) {
+            router.push('/AdminMainScreen');
+        } else {
+            router.push('/');
+        }
     } catch (err) {
-      console.error('Login failed: ', err);
-      alert(err.response.data.msg);
+        console.error('Login failed: ', err);
+        alert(err.response?.data?.msg || 'Login failed. Please try again.');
     }
-  };
+};
 
   const handleForgotPassword = () => {
     router.push('/forgot-password'); // Navigate to the forgot password page

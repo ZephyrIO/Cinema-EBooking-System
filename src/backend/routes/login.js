@@ -24,6 +24,11 @@ userRouter.post('/login', async (req, res) => {
             return res.status(400).json({ msg: 'User with this email does not exist.' });
         }
 
+        // Check if the user's account is not verified
+        if (user.status !== 'active') {
+            return res.status(403).json({ msg: 'Please verify your email before logging in.' });
+        }
+
         // Check if the user's account is suspended
         if (user.suspended) {
             return res.status(403).json({ msg: 'Your account has been suspended.' });
