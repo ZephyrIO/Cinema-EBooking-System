@@ -43,13 +43,13 @@ const sendConfirmationEmail = (toEmail, orderDetails) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'youremail@gmail.com',
-      pass: 'yourpassword',
+      user: process.env.EMAIL_USER || '4050testemail@gmail.com',
+      pass: process.env.EMAIL_PASS || 'fibv rdkr jxnh ukyc',
     },
   });
 
   const mailOptions = {
-    from: 'youremail@gmail.com',
+    from: '4050testemail@gmail.com',
     to: toEmail,
     subject: `Booking Confirmation - ${orderDetails.movie.title}`,
     text: `
